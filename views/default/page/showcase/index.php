@@ -50,6 +50,9 @@ $vars['title'] = 'Elgg Showcase';
                                                     </a>
                                                 </h2>
                                                 <p>{{item.summary}}</p>
+                                                <a href="{{item.targetUrl}}" class="elgg-button elgg-button-action">
+							Visit site
+						</a>
                                             </div>
                                         </div>
                                     </li>
@@ -94,6 +97,13 @@ $vars['title'] = 'Elgg Showcase';
         
             function ElggShowcase($scope) {
                 $scope.items = [{
+			displayName: 'Rotaractivity',
+			summary: 'A centralized platform for Rotaractors worldwide to communicate and collaborate amongst each other and spread the message of love, unity, acceptance and tolerance.',
+			targetUrl: 'http://rotaractivity.com/',
+			image: {
+				url: 'rotaractivity-screenshot.jpg'
+			}
+		}, {
 			displayName: 'Career College Lounge',
 			summary: 'A learning community for the career college sector of higher education',
 			targetUrl: 'http://www.careercollegelounge.com/',
@@ -119,7 +129,28 @@ $vars['title'] = 'Elgg Showcase';
 			summary: 'Connecting people affected by multiple sclerosis',
 			targetUrl: 'http://mymscommunity.msaustralia.org.au/',
 			image: {
-				url: 'mymscommunity-screenshot.jpg',
+				url: 'mymscommunity-screenshot.jpg'
+			}
+		}, {
+			displayName: 'Justairborne.com',
+			summary: 'Social network for aviators',
+			targetUrl: 'http://justairborne.com',
+			image: {
+				url: 'justairborne-screenshot.jpg'
+			}
+		}, {
+			displayName: 'Milkers',
+			summary: 'Aims to support companies in finding funds and other help evolving their business.',
+			targetUrl: 'http://www.milkers.nl/',
+			image: {
+				url: 'milkers-screenshot.jpg'
+			}
+		}, {
+			displayName: 'My Free Personals',
+			summary: 'An online dating site with almost 11,000 members running Elgg 1.8.13.',
+			targetUrl: 'http://myfreepersonals.com/',
+			image: {
+				url: 'myfreepersonals-screenshot.jpg'
 			}
 		}, {
                     displayName: 'Elgg Community',
