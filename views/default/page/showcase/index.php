@@ -94,6 +94,27 @@ $vars['title'] = 'Elgg Showcase';
         
             function ElggShowcase($scope) {
                 $scope.items = [{
+			displayName: 'Career College Lounge',
+			summary: 'A learning community for the career college sector of higher education',
+			targetUrl: 'http://www.careercollegelounge.com/',
+			image: {
+				url: 'careercollegelounge-screenshot.jpg'
+			}
+		}, {
+			displayName: 'Pleio (Dutch Government)',
+			summary: 'Pleio is currently working as an intranet 2.0 for a number of government agencies. Others use Pleio for collaboration in interorganisational and international  programs. There are also subsites for e-participation and open policymaking projects and for citizen initiatives.',
+			targetUrl: 'http://www.pleio.nl/',
+			image: {
+				url: 'pleio-screenshot.jpg'
+			}
+		}, {
+			displayName: 'Doenersnet (Oxfam Novib)',
+			summary: 'Organizing, mobilizing and informing volunteers about what they can do for a better world',
+			targetUrl: 'http://www.doenersnet.nl/',
+			image: {
+				url: 'doenersnet-screenshot.jpg'
+			}
+		}, {
 			displayName: 'My MS Community',
 			summary: 'Connecting people affected by multiple sclerosis',
 			targetUrl: 'http://mymscommunity.msaustralia.org.au/',
