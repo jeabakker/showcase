@@ -94,6 +94,13 @@ $vars['title'] = 'Elgg Showcase';
         
             function ElggShowcase($scope) {
                 $scope.items = [{
+			displayName: 'My MS Community',
+			summary: 'Connecting people affected by multiple sclerosis',
+			targetUrl: 'http://mymscommunity.msaustralia.org.au/',
+			image: {
+				url: 'mymscommunity-screenshot.jpg',
+			}
+		}, {
                     displayName: 'Elgg Community',
                     summary: 'Support from community members. Plugins and themes repository.',
                     targetUrl: 'http://community.elgg.org',
@@ -152,7 +159,7 @@ $vars['title'] = 'Elgg Showcase';
                 }, {
                     displayName: 'Alianza Arboles',
                     summary: 'A network that brings together individuals and organizations with the common goal of planting trees.',
-                    targetUrl: 'http://alianzaarboles.com',
+                    targetUrl: 'http://alianzaarboles.org',
                     image: {
                         src: 'alianzaarboles-screenshot.jpg'
                     }
