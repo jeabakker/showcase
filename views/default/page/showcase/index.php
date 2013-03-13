@@ -213,7 +213,7 @@ $vars['title'] = 'Elgg Showcase';
                     summary: 'A network that brings together individuals and organizations with the common goal of planting trees.',
                     targetUrl: 'http://alianzaarboles.org',
                     image: {
-                        src: 'alianzaarboles-screenshot.jpg'
+                        url: 'alianzaarboles-screenshot.jpg'
                     }
                 }, {
                     displayName: 'N-1',
