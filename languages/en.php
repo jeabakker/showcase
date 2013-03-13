@@ -7,6 +7,7 @@ add_translation('en', array(
 	'showcase:owner' => "%s's Showcase",
 	'showcase:none' => 'There are no sites in this Showcase yet!',
 	'showcase:friends' => "Friends' Showcase",
+	'showcase:suggest' => "+ Suggest a site",	
 
 	'admin:showcase' => "Showcase",
 	'admin:showcase:featured' => "Featured",
