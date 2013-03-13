@@ -14,7 +14,7 @@ $vars['title'] = 'Elgg Showcase';
 <html>
     <head>
         <?php echo elgg_view('page/elements/head', $vars); ?>
-	<meta name="description" content="A catalog of social networks and websites powered by Elgg.">
+	<meta name="description" content="Social networks and websites powered by Elgg. Accepting new submissions.">
         <meta name="viewport" content="width=device-width">
     </head>
     <body>
@@ -37,6 +37,9 @@ $vars['title'] = 'Elgg Showcase';
                                 <h2 class="elgg-heading-main">
                                     <?php echo elgg_echo('showcase'); ?>
                                 </h2>
+				<small style="display:block;clear:both">
+					Social networks and websites powered by Elgg
+				</small>
                             </div>
                             <div class="elgg-body">
                                 <ul class="elgg-gallery elgg-gallery-showcase" data-ng-controller="ElggShowcase">
