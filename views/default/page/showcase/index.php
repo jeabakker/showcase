@@ -2,20 +2,20 @@
 /**
  * This page must be included by the Elgg engine or it will not work.
  */
+
+elgg_load_css('elgg');
+elgg_load_css('elgg/gallery/showcase');
+elgg_load_css('elgg/showcase');
+
+$vars['title'] = 'Elgg Showcase';
+
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Elgg Showcase</title>
-        <meta name="description" content="A place to show off social networks and websites powered by Elgg.">
+        <?php echo elgg_view('page/elements/head', $vars); ?>
+	<meta name="description" content="A catalog of social networks and websites powered by Elgg.">
         <meta name="viewport" content="width=device-width">
-        <?php echo elgg_view('page/elements/shortcut_icon'); ?>
-
-        <link rel="stylesheet" href="<?php echo elgg_get_simplecache_url('css', 'elgg'); ?>" />
-        <link rel="stylesheet" href="<?php echo elgg_get_simplecache_url('css', 'elgg/gallery/showcase'); ?>" />
-        <link rel="stylesheet" href="<?php echo elgg_get_simplecache_url('css', 'elgg/showcase'); ?>" />
     </head>
     <body>
         <div class="elgg-page elgg-page-default">
@@ -31,6 +31,9 @@
                     <div class="elgg-layout elgg-layout-one-column">
                         <div class="elgg-main elgg-body">
                             <div class="elgg-head">
+				<a href="mailto:info@elgg.org" class="elgg-button elgg-button-action float-alt">
+					<?php echo elgg_echo('showcase:suggest'); ?>
+				</a>
                                 <h2 class="elgg-heading-main">
                                     <?php echo elgg_echo('showcase'); ?>
                                 </h2>
@@ -92,7 +95,7 @@
             function ElggShowcase($scope) {
                 $scope.items = [{
                     displayName: 'Elgg Community',
-                    summary: 'Community support from community members.',
+                    summary: 'Support from community members. Plugins and themes repository.',
                     targetUrl: 'http://community.elgg.org',
                     image: {
                         url: 'elgg-community-screenshot.jpg'

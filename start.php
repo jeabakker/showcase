@@ -15,16 +15,19 @@ function showcase_init() {
 	//handlers
 	elgg_register_entity_url_handler('object', 'showcase', 'showcase_url_handler');
     
-    elgg_register_simplecache_view('css/elgg/showcase');
-    elgg_register_simplecache_view('css/elgg/gallery/showcase');
+	elgg_register_simplecache_view('css/elgg/showcase');
+	elgg_register_simplecache_view('css/elgg/gallery/showcase');
     
-    elgg_register_page_handler('showcase', 'showcase_page_handler');
+	elgg_register_css('elgg/showcase', elgg_get_simplecache_url('css', 'elgg/showcase'));
+	elgg_register_css('elgg/gallery/showcase', elgg_get_simplecache_url('css', 'elgg/gallery/showcase'));
+
+	elgg_register_page_handler('showcase', 'showcase_page_handler');
     
-    elgg_register_menu_item('site', ElggMenuItem::factory(array(
-        'name' => 'showcase',
-        'href' => '/showcase',
-        'text' => elgg_echo('showcase'),
-    )));
+	elgg_register_menu_item('site', ElggMenuItem::factory(array(
+		'name' => 'showcase',
+		'href' => '/showcase',
+		'text' => elgg_echo('showcase'),
+	)));
 }
 
 function showcase_page_handler() {
