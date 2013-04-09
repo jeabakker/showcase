@@ -12,4 +12,5 @@ add_translation('en', array(
 	'admin:showcase' => "Showcase",
 	'admin:showcase:featured' => "Featured",
 	'admin:showcase:pending' => "Pending",
+	'item:object:showcase' => "Showcase",
 ));
