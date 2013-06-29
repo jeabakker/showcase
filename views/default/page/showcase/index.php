@@ -100,6 +100,13 @@ $vars['title'] = 'Elgg Showcase';
         
             function ElggShowcase($scope) {
                 $scope.items = [{
+			displayName: 'Minds.com',
+			summary: 'Minds is a universal network to search, create and share free information.',
+			targetUrl: 'http://www.minds.com/',
+			image: {
+				url: 'mindsdotcom-screenshot.jpg'
+			}
+		},{
 			displayName: 'Rotaractivity',
 			summary: 'A centralized platform for Rotaractors worldwide to communicate and collaborate amongst each other and spread the message of love, unity, acceptance and tolerance.',
 			targetUrl: 'http://rotaractivity.com/',
