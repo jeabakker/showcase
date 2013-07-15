@@ -11,12 +11,12 @@ $adding = !$showcase->guid;
 $editing = !$adding;
 
 if ($editing && !$showcase->canEdit()) {
-	register_error("You do not have permission to edit this showcase!");
+	register_error(elgg_echo('showcase:error:permissions:edit'));
 	forward(REFERER);
 }
 
-if ($adding && !can_write_to_container(0, $container_guid, 'object', 'showcase')) {
-	register_error("You do not have permission to add a site to that showcase!");
+if ($adding && !can_write_to_container(0, elgg_get_site_entity()->guid, 'object', 'showcase')) {
+	register_error(elgg_echo('showcase:error:permissions:container'));
 	forward(REFERER);
 }
 
@@ -26,24 +26,43 @@ $description = get_input('description');
 $tags = string_to_tag_array(get_input('tags', ''));
 
 if (empty($title) || empty($address) || empty($description)) {
-	register_error("An address, title, and description are required: $title, $address, $description");
+	register_error(elgg_echo('showcase:error:empty:fields'));
 	forward(REFERER);
 }
 
+// also make screenshot mandatory if we're adding
+if ($adding) {
+    if ((!isset($_FILES['screenshot'])) || (!substr_count($_FILES['screenshot']['type'],'image/'))) {
+        register_error(elgg_echo('showcase:error:empty:screenshot'));
+        forward(REFERER);
+    }
+}
+
+$showcase->owner_guid = elgg_get_logged_in_user_guid();
+$showcase->access_id = ACCESS_PRIVATE; // requires admin approval before we make it public
 $showcase->address = $address;
 $showcase->title = $title;
 $showcase->description = $description;
 $showcase->tags = $tags;
 
+// need to save first so we have a guid to use for the file
+try {
+	$showcase->save();
+} catch (Exception $e) {
+	register_error(elgg_echo('showcase:error:save:generic'));
+	register_error($e->getMessage());
+    forward(REFERER);
+}
+
 // Now see if we have a file icon
-if ((isset($_FILES['icon'])) && (substr_count($_FILES['icon']['type'],'image/'))) {
+if ((isset($_FILES['screenshot'])) && (substr_count($_FILES['screenshot']['type'],'image/'))) {    
 	$prefix = "showcase/".$showcase->guid;
 
 	$filehandler = new ElggFile();
 	$filehandler->owner_guid = $showcase->guid;
 	$filehandler->setFilename($prefix . ".jpg");
 	$filehandler->open("write");
-	$filehandler->write(get_uploaded_file('icon'));
+	$filehandler->write(get_uploaded_file('screenshot'));
 	$filehandler->close();
 
 	$thumbtiny = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),25,25, true);
@@ -81,14 +100,11 @@ if ((isset($_FILES['icon'])) && (substr_count($_FILES['icon']['type'],'image/'))
 	}
 }
 
-try {
-	$showcase->save();
-	add_to_river('river/object/showcase/create', 'create', elgg_get_logged_in_user_guid(), $showcase->guid);
-} catch (Exception $e) {
-	register_error("There was a problem saving your showcase!");
-	register_error($e->getMessage());
-}
-
 elgg_clear_sticky_form('showcase');
+
+if ($adding) {
+    $showcase->pending = 1;
+    add_to_river('river/object/showcase/create', 'create', elgg_get_logged_in_user_guid(), $showcase->guid);
+}
 
 forward(get_input('forward', $showcase->getURL()));

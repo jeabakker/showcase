@@ -4,8 +4,8 @@ function showcase_init() {
 	//general
 	elgg_register_entity_type("object", 'showcase');
 
-	// elgg_register_admin_menu_item('administer', 'pending', 'showcase');
-	// elgg_register_admin_menu_item('administer', 'featured', 'showcase');
+	elgg_register_admin_menu_item('administer', 'pending', 'showcase');
+	elgg_register_admin_menu_item('administer', 'featured', 'showcase');
 
 	//actions
 	$actions_base = dirname(__FILE__) . "/actions/showcase";
@@ -30,14 +30,14 @@ function showcase_init() {
 	)));
 }
 
-function showcase_page_handler() {
+function showcase_page_handler($page) {
     $handler = new ElggShowcaseIndexHandler();
-    echo $handler->get(); // This is an HTTP "GET" request
+    echo $handler->get($page); // This is an HTTP "GET" request
     return true;
 }
 
 function showcase_url_handler($object) {
-	return "/showcase/$object->guid";
+	return "/showcase/view/$object->guid";
 }
 
 elgg_register_event_handler('init', 'system', 'showcase_init');

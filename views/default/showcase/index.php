@@ -3,15 +3,14 @@
 $options = array(
     'type' => 'object',
     'subtype' => 'showcase',
-    'metadata_name_value_pairs' => array('name' => 'featured', 'value' => 1),
     'count' => true
 );
 
-$count = elgg_get_entities_from_metadata($options);
+$count = elgg_get_entities($options);
 
 if ($count) {
     unset($options['count']);
-    echo elgg_list_entities_from_metadata($options);
+    echo elgg_list_entities($options);
 }
 else {
     echo elgg_echo('showcase:noresults');
