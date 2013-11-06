@@ -31,9 +31,12 @@ $vars['title'] = 'Elgg Showcase';
                     <div class="elgg-layout elgg-layout-one-column">
                         <div class="elgg-main elgg-body">
                             <div class="elgg-head">
+<?php /*
 				<a href="mailto:info@elgg.org" class="elgg-button elgg-button-action float-alt">
 					<?php echo elgg_echo('showcase:suggest'); ?>
 				</a>
+ */
+?>
                                 <h2 class="elgg-heading-main">
                                     <?php echo elgg_echo('showcase'); ?>
                                 </h2>
