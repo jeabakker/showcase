@@ -69,6 +69,7 @@ if ((isset($_FILES['screenshot'])) && (substr_count($_FILES['screenshot']['type'
 	$thumbsmall = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),40,40, true);
 	$thumbmedium = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),100,100, true);
 	$thumblarge = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),200,200, false);
+	$thumbmaster = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),450,250, false);
 
 	if ($thumbtiny) {
 
@@ -95,16 +96,16 @@ if ((isset($_FILES['screenshot'])) && (substr_count($_FILES['screenshot']['type'
 		$thumb->open("write");
 		$thumb->write($thumblarge);
 		$thumb->close();
+		
+		$thumb->setFilename($prefix."master.jpg");
+		$thumb->open("write");
+		$thumb->write($thumbmaster);
+		$thumb->close();
 
 		$showcase->icontime = time();
 	}
 }
 
 elgg_clear_sticky_form('showcase');
-
-if ($adding) {
-    $showcase->pending = 1;
-    add_to_river('river/object/showcase/create', 'create', elgg_get_logged_in_user_guid(), $showcase->guid);
-}
 
 forward(get_input('forward', $showcase->getURL()));

@@ -27,4 +27,7 @@ add_translation('en', array(
     'showcase:error:empty:fields' => "An address, title, and description are required",
     'showcase:error:save:generic' => "There was a problem saving your showcase!",
     'showcase:error:empty:screenshot' => "A screenshot is required",
+	'showcase:message:deleted' => "Showcase has been deleted",
+	'showcase:error:cannot_delete' => "Cannot delete showcase",
+	'showcase:error:not_found' => "The showcase could not be found",
 ));

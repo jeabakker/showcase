@@ -3,6 +3,7 @@
 $options = array(
     'type' => 'object',
     'subtype' => 'showcase',
+	'full_view' => false,
     'count' => true
 );
 
