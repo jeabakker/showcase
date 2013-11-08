@@ -18,7 +18,7 @@ add_translation('en', array(
     
     // edit form
     'showcase:screenshot' => 'Screenshot',
-    'showcase:screenshot:help' => 'Make sure the screenshot is a decent resolution - will be downscaled to 250px max height',
+    'showcase:screenshot:help' => 'Make sure the screenshot is a decent resolution - but no more than 700px x 400px',
     'showcase:address' => 'Website Address',
     
     // messages
@@ -30,4 +30,6 @@ add_translation('en', array(
 	'showcase:message:deleted' => "Showcase has been deleted",
 	'showcase:error:cannot_delete' => "Cannot delete showcase",
 	'showcase:error:not_found' => "The showcase could not be found",
+	'showcase:error:invalid:url' => "The url supplied was invalid",
+	'showcase:edit:review' => "Any updates must be reviewed by an administrator.  After saving the listing will not be visible again until approved.",
 ));

@@ -1,15 +1,15 @@
 <?php
 
 function showcase_init() {
+	elgg_extend_view('css/elgg', 'css/showcase');
+	
 	//general
 	elgg_register_entity_type("object", 'showcase');
-
-	elgg_register_admin_menu_item('administer', 'pending', 'showcase');
-	elgg_register_admin_menu_item('administer', 'featured', 'showcase');
 
 	//actions
 	$actions_base = dirname(__FILE__) . "/actions/showcase";
 	elgg_register_action("showcase/add", "$actions_base/save.php");
+	elgg_register_action("showcase/edit", "$actions_base/save.php");
 	elgg_register_action("showcase/delete", "$actions_base/delete.php");
 
 	//handlers
@@ -30,7 +30,8 @@ function showcase_page_handler($page) {
 	switch ($page[0]) {
 		case 'add':
 			gatekeeper();
-               
+            
+			elgg_set_page_owner_guid(elgg_get_logged_in_user_guid());
             elgg_push_breadcrumb(elgg_echo('showcase'), elgg_get_site_url() . 'showcase');
             elgg_push_breadcrumb(elgg_echo('showcase:add'));
                 
@@ -39,7 +40,8 @@ function showcase_page_handler($page) {
             $layout = elgg_view_layout('content', array(
                 'title' => $title,
                 'content' => $content,
-				'filter' => false
+				'filter' => false,
+				'sidebar' => elgg_view('showcase/sidebar')
             ));
             echo elgg_view_page(elgg_echo('showcase'), $layout);
 			return true;
@@ -53,6 +55,7 @@ function showcase_page_handler($page) {
                forward('','404');
             }
                 
+			elgg_set_page_owner_guid(elgg_get_logged_in_user_guid());
             elgg_push_breadcrumb(elgg_echo('showcase'), elgg_get_site_url() . 'showcase');
             elgg_push_breadcrumb($showcase->title, $showcase->getURL());
             elgg_push_breadcrumb(elgg_echo('edit'));
@@ -62,7 +65,8 @@ function showcase_page_handler($page) {
             $layout = elgg_view_layout('content', array(
                 'title' => $title,
                 'content' => $content,
-				'filter' => false
+				'filter' => false,
+				'sidebar' => elgg_view('showcase/sidebar')
             ));
             echo elgg_view_page(elgg_echo('showcase'), $layout);
 			return true;
@@ -75,17 +79,25 @@ function showcase_page_handler($page) {
                 forward('','404');
             }
 			
+			elgg_set_page_owner_guid($showcase->owner_guid);
 			elgg_push_breadcrumb(elgg_echo('showcase'), elgg_get_site_url() . 'showcase');
             elgg_push_breadcrumb($showcase->title, $showcase->getURL());
                 
             $title = $showcase->title;
+			$title_link = elgg_view('output/url', array(
+				'text' => $title,
+				'href' => $showcase->address,
+				'target' => '_blank'
+			));
             $content = elgg_view_entity($showcase, array('full_view' => true));
+			$content .= elgg_view_comments($showcase);
             $layout = elgg_view_layout('content', array(
-                'title' => $title,
+                'title' => $title_link,
                 'content' => $content,
-				'filter' => false
+				'filter' => false,
+				'sidebar' => elgg_view('showcase/sidebar')
             ));
-            echo elgg_view_page(elgg_echo('showcase'), $layout);
+            echo elgg_view_page($title, $layout);
 			return true;
             break;
 		case 'icon':
@@ -122,7 +134,8 @@ function showcase_page_handler($page) {
             $layout = elgg_view_layout('content', array(
                 'title' => $title,
                 'content' => $content,
-				'filter' => false
+				'filter' => false,
+				'sidebar' => elgg_view('showcase/sidebar')
             ));
             echo elgg_view_page(elgg_echo('showcase'), $layout);
 			return true;

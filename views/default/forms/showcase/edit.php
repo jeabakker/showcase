@@ -2,6 +2,13 @@
 
 $showcase = $vars['entity'];
 
+if ($showcase) {
+	echo elgg_view('output/longtext', array(
+		'value' => elgg_echo('showcase:edit:review'),
+		'class' => 'elgg-subtext showcase-review-notice'
+	));
+}
+
 $screenshot = array(
 	'name' => 'screenshot',
 	'id' => 'showcase_screenshot',
