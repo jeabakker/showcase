@@ -36,4 +36,8 @@ add_translation('en', array(
 	// tabs
 	'showcase:tab:featured' => 'Featured',
 	'showcase:tab:unvalidated' => 'Unvalidated',
+	
+	'showcase:title:featured' => "Featured Showcases",
+	'showcase:title:mine' => "%s's Showcases",
+	'showcase:title:unvalidated' => "Unvalidated Showcases",
 ));

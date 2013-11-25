@@ -3,6 +3,7 @@
 $filter = get_input('filter', 'featured');
 
 // set defaults
+$title = elgg_echo('showcase');
 $count_getter = 'elgg_get_entities';
 $list_getter = 'elgg_list_entities';
 $options = array(
@@ -15,6 +16,7 @@ $options = array(
 
 switch ($filter) {
 	case 'featured':
+		$title = elgg_echo('showcase:title:featured');
 		$count_getter = 'elgg_get_entities_from_metadata';
 		$list_getter = 'elgg_list_entities_from_metadata';
 		$options['metadata_name_value_pairs'] = array(
@@ -28,6 +30,7 @@ switch ($filter) {
 			break;
 		}
 		
+		$title = elgg_echo('showcase:title:mine', array(elgg_get_logged_in_user_entity()->name));
 		$options['owner_guid'] = elgg_get_logged_in_user_guid();
 		break;
 	case 'unvalidated':
@@ -35,15 +38,17 @@ switch ($filter) {
 			break;
 		}
 		
+		$title = elgg_echo('showcase:title:unvalidated');
 		$options['wheres'] = array("e.access_id = " . ACCESS_PRIVATE);
+		
+		// don't want to lose updates to older showcases in the noise, bump them back to the top
+		$options['order_by'] = 'e.time_updated DESC';
 		break;
 	case 'all':
 	default:
 		// defaults already set
 		break;
 }
-
-$title = elgg_echo('showcase');
 
 $count = $count_getter($options);
 
