@@ -128,16 +128,11 @@ function showcase_page_handler($page) {
             if (elgg_is_logged_in()) {
                 elgg_register_title_button();
             }
-                
-            $title = elgg_echo('showcase');
-            $content = elgg_view('showcase/index');
-            $layout = elgg_view_layout('content', array(
-                'title' => $title,
-                'content' => $content,
-				'filter' => false,
-				'sidebar' => elgg_view('showcase/sidebar')
-            ));
-            echo elgg_view_page(elgg_echo('showcase'), $layout);
+            
+			if (include(dirname(__FILE__) . '/pages/showcase/list.php')) {
+				return true;
+			}
+            
 			return true;
             break;
     }

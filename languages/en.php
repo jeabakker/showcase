@@ -32,4 +32,8 @@ add_translation('en', array(
 	'showcase:error:not_found' => "The showcase could not be found",
 	'showcase:error:invalid:url' => "The url supplied was invalid",
 	'showcase:edit:review' => "Any updates must be reviewed by an administrator.  After saving the listing will not be visible again until approved.",
+	
+	// tabs
+	'showcase:tab:featured' => 'Featured',
+	'showcase:tab:unvalidated' => 'Unvalidated',
 ));
