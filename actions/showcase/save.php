@@ -21,7 +21,7 @@ if ($adding && !can_write_to_container(0, elgg_get_site_entity()->guid, 'object'
 }
 
 $address = get_input('address', '', false);
-$title = get_input('title', '', false);
+$title = htmlspecialchars(get_input('title', '', false), ENT_QUOTES, 'UTF-8');
 $description = get_input('description');
 $tags = string_to_tag_array(get_input('tags', ''));
 
