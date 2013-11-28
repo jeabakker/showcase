@@ -1,5 +1,7 @@
 <?php
 
+elgg_register_event_handler('init', 'system', 'showcase_init');
+
 function showcase_init() {
 	elgg_extend_view('css/elgg', 'css/showcase');
 	
@@ -11,11 +13,14 @@ function showcase_init() {
 	elgg_register_action("showcase/add", "$actions_base/save.php");
 	elgg_register_action("showcase/edit", "$actions_base/save.php");
 	elgg_register_action("showcase/delete", "$actions_base/delete.php");
+	elgg_register_action("showcase/toggle_validation", "$actions_base/toggle_validation.php", 'admin');
+	elgg_register_action("showcase/toggle_featured", "$actions_base/toggle_featured.php", 'admin');
 
 	//handlers
 	elgg_register_entity_url_handler('object', 'showcase', 'showcase_url_handler');
 	
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'showcase_icon_url_handler');
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'showcase_entity_menu');
 
 	elgg_register_page_handler('showcase', 'showcase_page_handler');
     
@@ -161,4 +166,34 @@ function showcase_icon_url_handler($hook, $type, $return, $params) {
 	return $return;
 }
 
-elgg_register_event_handler('init', 'system', 'showcase_init');
+
+function showcase_entity_menu($hook, $type, $return, $params) {
+	if (!elgg_is_admin_logged_in()) {
+		return $return;
+	}
+	
+	if (!elgg_instanceof($params['entity'], 'object', 'showcase')) {
+		return $return;
+	}
+	
+	$text = elgg_echo('showcase:unvalidate');
+	if ($params['entity']->access_id == ACCESS_PRIVATE) {
+		$text = elgg_echo('showcase:validate');
+	}
+	$href = elgg_add_action_tokens_to_url('action/showcase/toggle_validation?guid='.$params['entity']->guid);
+	
+	$validate = new ElggMenuItem('validate', $text, $href);
+	$return[] = $validate;
+	
+	
+	$text = elgg_echo('showcase:feature');
+	if ($params['entity']->showcase_featured) {
+		$text = elgg_echo('showcase:unfeature');
+	}
+	$href = elgg_add_action_tokens_to_url('action/showcase/toggle_featured?guid='.$params['entity']->guid);
+	
+	$feature = new ElggMenuItem('feature', $text, $href);
+	$return[] = $feature;
+	
+	return $return;
+}

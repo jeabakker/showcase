@@ -20,7 +20,7 @@ switch ($filter) {
 		$count_getter = 'elgg_get_entities_from_metadata';
 		$list_getter = 'elgg_list_entities_from_metadata';
 		$options['metadata_name_value_pairs'] = array(
-			'name' => 'featured',
+			'name' => 'showcase_featured',
 			'value' => '1'
 		);
 		break;

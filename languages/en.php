@@ -15,6 +15,13 @@ add_translation('en', array(
 	'admin:showcase:featured' => "Featured",
 	'admin:showcase:pending' => "Pending",
 	'item:object:showcase' => "Showcase",
+	
+	'showcase:validate' => 'Validate',
+	'showcase:unvalidate' => 'Unvalidate',
+	'showcase:feature' => 'Feature',
+	'showcase:unfeature' => 'Unfeature',
+	'showcase:action:featured' => "Showcase has been featured",
+	'showcase:action:unfeatured' => "Showcase has been unfeatured",
     
     // edit form
     'showcase:screenshot' => 'Screenshot',
@@ -32,6 +39,10 @@ add_translation('en', array(
 	'showcase:error:not_found' => "The showcase could not be found",
 	'showcase:error:invalid:url' => "The url supplied was invalid",
 	'showcase:edit:review' => "Any updates must be reviewed by an administrator.  After saving the listing will not be visible again until approved.",
+	'showcase:approval:subject' => "Showcase has been approved",
+	'showcase:approval:message' => "Hello %s,
+The showcase you have submitted has been approved by an administrator.
+You can view your showcase here: %s",
 	
 	// tabs
 	'showcase:tab:featured' => 'Featured',
