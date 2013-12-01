@@ -20,13 +20,22 @@ $tabs = array(
 
 if (elgg_is_logged_in()) {
 	$mine = array(
-		'name' => 'mine',
-		'href' => 'showcase?filter=mine',
+		'name' => 'owner',
+		'href' => 'showcase/owner/' . urlencode(elgg_get_logged_in_user_entity()->username),
 		'text' => elgg_echo('mine'),
-		'selected' => ($filter == 'mine')
+		'selected' => ($filter == 'owner')
 	);
 	
 	$tabs[] = $mine;
+	
+	$friends = array(
+		'name' => 'mine',
+		'href' => 'showcase/friends/' . urlencode(elgg_get_logged_in_user_entity()->username),
+		'text' => elgg_echo('friends'),
+		'selected' => ($filter == 'friends')
+	);
+	
+	$tabs[] = $friends;
 }
 
 

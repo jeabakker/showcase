@@ -49,6 +49,11 @@ You can view your showcase here: %s",
 	'showcase:tab:unvalidated' => 'Unvalidated',
 	
 	'showcase:title:featured' => "Featured Showcases",
-	'showcase:title:mine' => "%s's Showcases",
+	'showcase:title:owner' => "%s's Showcases",
+	'showcase:title:friends' => "Friends Showcases",
 	'showcase:title:unvalidated' => "Unvalidated Showcases",
+	
+	'showcase:widget:title' => 'Showcase',
+	'showcase:widget:description' => 'Display a list of your showcases',
+	'showcase:widget:label:number' => 'Number to display',
 ));

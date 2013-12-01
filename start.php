@@ -29,6 +29,8 @@ function showcase_init() {
 		'href' => '/showcase',
 		'text' => elgg_echo('showcase'),
 	)));
+	
+elgg_register_widget_type('showcase', elgg_echo('showcase:widget:title'), elgg_echo('showcase:widget:description'), 'profile,dashboard');
 }
 
 function showcase_page_handler($page) {
@@ -127,6 +129,42 @@ function showcase_page_handler($page) {
 				exit;
 			}
 			break;
+		case 'owner':
+			elgg_push_breadcrumb(elgg_echo('showcase'));
+			
+			$username = urldecode($page[1]);
+			$user = get_user_by_username($username);
+			if (!$user) {
+				return false;
+			}
+			elgg_set_page_owner_guid($user->guid);
+			
+			set_input('filter', 'owner');
+			set_input('owner_guid', $user->guid);
+            
+			if (include(dirname(__FILE__) . '/pages/showcase/list.php')) {
+				return true;
+			}
+            	
+			break;
+			
+		case 'friends':
+			elgg_push_breadcrumb(elgg_echo('showcase'));
+			
+			$username = urldecode($page[1]);
+			$user = get_user_by_username($username);
+			if (!$user) {
+				return false;
+			}
+			elgg_set_page_owner_guid($user->guid);
+			
+			set_input('filter', 'friends');
+			set_input('owner_guid', $user->guid);
+            
+			if (include(dirname(__FILE__) . '/pages/showcase/list.php')) {
+				return true;
+			}
+			break;
         default:
             elgg_push_breadcrumb(elgg_echo('showcase'));
               
@@ -138,7 +176,6 @@ function showcase_page_handler($page) {
 				return true;
 			}
             
-			return true;
             break;
     }
 	

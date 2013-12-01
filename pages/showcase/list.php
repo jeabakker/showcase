@@ -23,15 +23,45 @@ switch ($filter) {
 			'name' => 'showcase_featured',
 			'value' => '1'
 		);
+		$options['wheres'] = array("e.access_id = " . ACCESS_PUBLIC);
 		break;
-	case 'mine':
-		if (!elgg_is_logged_in()) {
-			// only available to logged in users
+	case 'owner':
+		$owner = get_user(get_input('owner_guid'));
+		if (!$owner) {
 			break;
 		}
 		
-		$title = elgg_echo('showcase:title:mine', array(elgg_get_logged_in_user_entity()->name));
-		$options['owner_guid'] = elgg_get_logged_in_user_guid();
+		$title = elgg_echo('showcase:title:owner', array(elgg_get_logged_in_user_entity()->name));
+		$options['owner_guid'] = $owner->guid;
+		break;
+	case 'friends':
+		$owner = get_user(get_input('owner_guid'));
+		if (!$owner) {
+			break;
+		}
+		
+		$fr_options = array(
+			'type' => 'user',
+			'relationship' => 'friend',
+			'relationship_guid' => $owner->guid,
+			'limit' => 0,
+			'callback' => false // no need for entities, keep it quick
+		);
+		
+		$friends = new ElggBatch('elgg_get_entities_from_relationship', $fr_options);
+		$friend_guids = array();
+		foreach ($friends as $friend) {
+			$friend_guids[] = $friend->guid;
+		}
+		
+		$title = elgg_echo('showcase:title:friends');
+		
+		if ($friend_guids) {
+			$options['owner_guids'] = $friend_guids;
+		}
+		else {
+			$options['joins'] = false; // invalidate the query, nothing to show
+		}
 		break;
 	case 'unvalidated':
 		if (!elgg_is_admin_logged_in()) {

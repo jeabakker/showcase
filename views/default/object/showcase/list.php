@@ -12,11 +12,13 @@ $metadata = elgg_view_menu('entity', array(
 ));
 
 // do not show the metadata and controls in widget view
+$iconsize = 'medium';
 if (elgg_in_context('widgets')) {
 	$metadata = '';
+	$iconsize = 'small';
 }
 
-$icon = elgg_view_entity_icon($showcase, 'medium');
+$icon = elgg_view_entity_icon($showcase, $iconsize);
 
 $params = array(
 	'entity' => $showcase,
