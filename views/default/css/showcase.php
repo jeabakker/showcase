@@ -8,3 +8,11 @@
 .showcase-review-notice {
 	color: red;
 }
+
+.elgg-showcase-screenshots li {
+	text-align: center;
+}
+
+.elgg-showcase-screenshot {
+	display: block;
+}

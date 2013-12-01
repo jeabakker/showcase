@@ -10,6 +10,11 @@ $adding = !$showcase->guid;
 
 $editing = !$adding;
 
+$file_keys = array();
+if ($_FILES['screenshot']['tmp_name']) {
+	$file_keys = array_keys($_FILES['screenshot']['tmp_name']);
+}
+
 if ($editing && !$showcase->canEdit()) {
 	register_error(elgg_echo('showcase:error:permissions:edit'));
 	forward(REFERER);
@@ -24,6 +29,7 @@ $address = get_input('address', '', false);
 $title = htmlspecialchars(get_input('title', '', false), ENT_QUOTES, 'UTF-8');
 $description = get_input('description');
 $tags = string_to_tag_array(get_input('tags', ''));
+$allow_comments = get_input('allow_comments', 1);
 
 if (empty($title) || empty($address) || empty($description)) {
 	register_error(elgg_echo('showcase:error:empty:fields'));
@@ -55,10 +61,20 @@ if (!$validated) {
 
 // also make screenshot mandatory if we're adding
 if ($adding) {
-    if ((!isset($_FILES['screenshot'])) || (!substr_count($_FILES['screenshot']['type'],'image/'))) {
-        register_error(elgg_echo('showcase:error:empty:screenshot'));
+	$screenshot = false;
+	if ($file_keys) {
+		foreach ($file_keys as $key) {
+			if (substr_count($_FILES['screenshot']['type'][$key],'image/') && !$_FILES['screenshot']['error'][$key]) {
+				$screenshot = true;
+				break;
+			}
+		}
+	}
+	
+	if (!$screenshot) {
+		register_error(elgg_echo('showcase:error:empty:screenshot'));
         forward(REFERER);
-    }
+	}
 }
 
 $showcase->owner_guid = elgg_get_logged_in_user_guid();
@@ -67,6 +83,7 @@ $showcase->address = $address;
 $showcase->title = $title;
 $showcase->description = $description;
 $showcase->tags = $tags;
+$showcase->allow_comments = $allow_comments;
 
 // need to save first so we have a guid to use for the file
 try {
@@ -78,54 +95,60 @@ try {
 }
 
 // Now see if we have a file icon
-if ((isset($_FILES['screenshot'])) && (substr_count($_FILES['screenshot']['type'],'image/'))) {    
-	$prefix = "showcase/".$showcase->guid;
+if ($file_keys) {
+	$time = time();
+	foreach ($file_keys as $key) {
+		$prefix = "showcase/".$time.$key;
 
-	$filehandler = new ElggFile();
-	$filehandler->owner_guid = $showcase->guid;
-	$filehandler->setFilename($prefix . ".jpg");
-	$filehandler->open("write");
-	$filehandler->write(get_uploaded_file('screenshot'));
-	$filehandler->close();
-
-	$thumbtiny = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),25,25, true);
-	$thumbsmall = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),40,40, true);
-	$thumbmedium = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),100,100, true);
-	$thumblarge = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),200,200, false);
-	$thumbmaster = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),700,400, false);
-
-	if ($thumbtiny) {
-
-		$thumb = new ElggFile();
-		$thumb->owner_guid = $showcase->guid;
-		$thumb->setMimeType('image/jpeg');
-
-		$thumb->setFilename($prefix."tiny.jpg");
-		$thumb->open("write");
-		$thumb->write($thumbtiny);
-		$thumb->close();
-
-		$thumb->setFilename($prefix."small.jpg");
-		$thumb->open("write");
-		$thumb->write($thumbsmall);
-		$thumb->close();
-
-		$thumb->setFilename($prefix."medium.jpg");
-		$thumb->open("write");
-		$thumb->write($thumbmedium);
-		$thumb->close();
-
-		$thumb->setFilename($prefix."large.jpg");
-		$thumb->open("write");
-		$thumb->write($thumblarge);
-		$thumb->close();
+		$filehandler = new ElggShowcaseImg();
+		$filehandler->owner_guid = $showcase->guid;
+		$filehandler->setFilename($prefix . ".jpg");
+		$filehandler->open("write");
+		$filehandler->write(file_get_contents($_FILES['screenshot']['tmp_name'][$key]));
+		$filehandler->close();
+		$filehandler->save();
 		
-		$thumb->setFilename($prefix."master.jpg");
-		$thumb->open("write");
-		$thumb->write($thumbmaster);
-		$thumb->close();
+		add_entity_relationship($filehandler->guid, 'screenshot', $showcase->guid);
 
-		$showcase->icontime = time();
+		$thumbtiny = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),25,25, true);
+		$thumbsmall = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),40,40, true);
+		$thumbmedium = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),100,100, true);
+		$thumblarge = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),200,200, false);
+		$thumbmaster = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),700,400, false);
+
+		if ($thumbtiny) {
+
+			$thumb = new ElggFile();
+			$thumb->owner_guid = $showcase->guid;
+			$thumb->setMimeType('image/jpeg');
+			
+			$thumb->setFilename($prefix."tiny.jpg");
+			$thumb->open("write");
+			$thumb->write($thumbtiny);
+			$thumb->close();
+
+			$thumb->setFilename($prefix."small.jpg");
+			$thumb->open("write");
+			$thumb->write($thumbsmall);
+			$thumb->close();
+
+			$thumb->setFilename($prefix."medium.jpg");
+			$thumb->open("write");
+			$thumb->write($thumbmedium);
+			$thumb->close();
+
+			$thumb->setFilename($prefix."large.jpg");
+			$thumb->open("write");
+			$thumb->write($thumblarge);
+			$thumb->close();
+		
+			$thumb->setFilename($prefix."master.jpg");
+			$thumb->open("write");
+			$thumb->write($thumbmaster);
+			$thumb->close();
+		}
+		
+		$filehandler->file_prefix = $prefix;
 	}
 }
 

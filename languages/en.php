@@ -27,12 +27,16 @@ add_translation('en', array(
     'showcase:screenshot' => 'Screenshot',
     'showcase:screenshot:help' => 'Make sure the screenshot is a decent resolution - but no more than 700px x 400px',
     'showcase:address' => 'Website Address',
+	'showcase:allow:comments' => "Allow Comments",
+	'showcase:add:another' => 'Add another',
+	'showcase:imagedelete:failed' => "There was an error deleting the screenshot",
     
     // messages
     'showcase:error:permissions:edit' => "You do not have permission to edit this showcase!",
     'showcase:error:permissions:container' => "You do not have permission to add a site to that showcase!",
     'showcase:error:empty:fields' => "An address, title, and description are required",
     'showcase:error:save:generic' => "There was a problem saving your showcase!",
+	'showcase:error:invalid:guid' => "Invalid request, you may not have permission.",
     'showcase:error:empty:screenshot' => "A screenshot is required",
 	'showcase:message:deleted' => "Showcase has been deleted",
 	'showcase:error:cannot_delete' => "Cannot delete showcase",

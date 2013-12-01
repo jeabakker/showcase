@@ -1,16 +1,33 @@
 <?php
 
+elgg_load_js('lightbox');
+elgg_load_css('lightbox');
+
 $showcase = $vars['entity'];
 $owner = $showcase->getOwnerEntity();
 
-$img = elgg_view_entity_icon($showcase, 'master', array(
-	'href' => false,
+$images = elgg_get_entities_from_relationship(array(
+	'type' => 'object',
+	'subtype' => 'showcaseimg',
+	'relationship' => 'screenshot',
+	'relationship_guid' => $vars['entity']->guid,
+	'inverse_relationship' => true,
+	'limit' => 10,
+	'order_by' => 'e.time_created ASC'
 ));
-$icon = elgg_view('output/url', array(
-	'text' => $img,
-	'href' => $showcase->address,
-	'class' => 'showcase-master'
-));
+
+$gallery = '';
+if ($images) {
+	$gallery = '<ul class="elgg-gallery elgg-showcase-screenshots">';
+	foreach ($images as $img) {
+		$thumb_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/large/" . md5($img->time_created) . '.jpg';
+		$full_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/master/" . md5($img->time_created) . '.jpg';
+		$gallery .= '<li>';
+		$gallery .= "<a class=\"elgg-showcase-screenshot elgg-lightbox\" href=\"$full_url\" rel=\"showcase-gallery\"><img src=\"$thumb_url\" alt=\"$img->title\" title=\"$img->title\"/></a>";
+		$gallery .= '</li>';
+	}
+	$gallery .= '</ul>';
+}
 
 $owner_icon = elgg_view_entity_icon($owner, 'tiny');
 $owner_link = elgg_view('output/url', array(
@@ -23,7 +40,7 @@ $date = elgg_view_friendly_time($showcase->time_created);
 
 $categories = elgg_view('output/categories', $vars);
 
-$body = $icon . elgg_view('output/longtext', array('value' => $showcase->description));
+$body = $gallery . elgg_view('output/longtext', array('value' => $showcase->description));
 
 $metadata = elgg_view_menu('entity', array(
 	'entity' => $showcase,

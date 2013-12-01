@@ -5,6 +5,10 @@ elgg_register_event_handler('init', 'system', 'showcase_init');
 function showcase_init() {
 	elgg_extend_view('css/elgg', 'css/showcase');
 	
+	$js = elgg_get_simplecache_url('js', 'showcase/js');
+	elgg_register_simplecache_view('js/showcase/js');
+	elgg_register_js('showcase', $js);
+	
 	//general
 	elgg_register_entity_type("object", 'showcase');
 
@@ -13,6 +17,7 @@ function showcase_init() {
 	elgg_register_action("showcase/add", "$actions_base/save.php");
 	elgg_register_action("showcase/edit", "$actions_base/save.php");
 	elgg_register_action("showcase/delete", "$actions_base/delete.php");
+	elgg_register_action("showcase/screenshot/delete", "$actions_base/screenshot_delete.php");
 	elgg_register_action("showcase/toggle_validation", "$actions_base/toggle_validation.php", 'admin');
 	elgg_register_action("showcase/toggle_featured", "$actions_base/toggle_featured.php", 'admin');
 
@@ -21,6 +26,9 @@ function showcase_init() {
 	
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'showcase_icon_url_handler');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'showcase_entity_menu');
+	
+	elgg_register_event_handler('update', 'object', 'showcase_object_update');
+	elgg_register_event_handler('delete', 'object', 'showcase_object_delete');
 
 	elgg_register_page_handler('showcase', 'showcase_page_handler');
     
@@ -30,7 +38,7 @@ function showcase_init() {
 		'text' => elgg_echo('showcase'),
 	)));
 	
-elgg_register_widget_type('showcase', elgg_echo('showcase:widget:title'), elgg_echo('showcase:widget:description'), 'profile,dashboard');
+	elgg_register_widget_type('showcase', elgg_echo('showcase:widget:title'), elgg_echo('showcase:widget:description'), 'profile,dashboard');
 }
 
 function showcase_page_handler($page) {
@@ -97,7 +105,11 @@ function showcase_page_handler($page) {
 				'target' => '_blank'
 			));
             $content = elgg_view_entity($showcase, array('full_view' => true));
-			$content .= elgg_view_comments($showcase);
+			
+			if ($showcase->allow_comments) {
+				$content .= elgg_view_comments($showcase);
+			}
+			
             $layout = elgg_view_layout('content', array(
                 'title' => $title_link,
                 'content' => $content,
@@ -108,23 +120,26 @@ function showcase_page_handler($page) {
 			return true;
             break;
 		case 'icon':
-			$showcase = get_entity($page[1]);
-			if (!elgg_instanceof($showcase, 'object', 'showcase')) {
+			$img = get_entity($page[1]);
+			$size = $page[2];
+			if (!elgg_instanceof($img, 'object', 'showcaseimg')) {
                 forward('','404');
             }
 			
-			$filehandler = new ElggFile();
-			$filehandler->owner_guid = $showcase->guid;
-			$filehandler->setFilename("showcase/{$showcase->guid}{$page[2]}.jpg");
-			$filename = $filehandler->getFilenameOnFilestore();
+			if ($size == 'original') {
+				$size = '';
+			}
 			
-			$size = @filesize($filename);
-			if ($size) {
+			$img->setFilename($img->file_prefix . $size . '.jpg');
+			$filename = $img->getFilenameOnFilestore();
+			
+			$filesize = @filesize($filename);
+			if ($filesize) {
 				header("Content-type: image/jpeg");
 				header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', strtotime("+6 months")), true);
 				header("Pragma: public");
 				header("Cache-Control: public");
-				header("Content-Length: $size");
+				header("Content-Length: $filesize");
 				readfile($filename);
 				exit;
 			}
@@ -192,12 +207,20 @@ function showcase_icon_url_handler($hook, $type, $return, $params) {
 		return $return;
 	}
 	
-	$filehandler = new ElggFile();
-	$filehandler->owner_guid = $params['entity']->guid;
-	$filehandler->setFilename("showcase/{$params['entity']->guid}{$params['size']}.jpg");
+	// get first (oldest) image
+	$img = elgg_get_entities_from_relationship(array(
+		'type' => 'object',
+		'subtype' => 'showcaseimg',
+		'relationship' => 'screenshot',
+		'relationship_guid' => $params['entity']->guid,
+		'inverse_relationship' => true,
+		'limit' => 1,
+		'order_by' => 'e.time_created ASC'
+	));
 	
-	if ($filehandler->exists()) {
-		return "showcase/icon/{$params['entity']->guid}/{$params['size']}/{$params['entity']->icontime}.jpg";
+	if ($img[0]) {
+		$filename = md5($img[0]->time_created);
+		return "showcase/icon/{$img[0]->guid}/{$params['size']}/{$filename}.jpg";
 	}
 	
 	return $return;
@@ -233,4 +256,72 @@ function showcase_entity_menu($hook, $type, $return, $params) {
 	$return[] = $feature;
 	
 	return $return;
+}
+
+
+
+function showcase_object_update($event, $type, $object) {
+	if (!elgg_instanceof($object, 'object', 'showcase')) {
+		return;
+	}
+	
+	// update the access ID of attached screenshots
+	$images = elgg_get_entities_from_relationship(array(
+		'type' => 'object',
+		'subtype' => 'showcaseimg',
+		'relationship' => 'screenshot',
+		'relationship_guid' => $object->guid,
+		'inverse_relationship' => true,
+		'limit' => false
+	));
+	
+	foreach ($images as $img) {
+		if ($img->access_id != $object->access_id) {
+			$img->access_id = $object->access_id;
+			$img->save();
+		}
+	}
+}
+
+
+function showcase_object_delete($event, $type, $object) {
+	// if deleting showcase delete associated images
+	if (elgg_instanceof($object, 'object', 'showcase')) {
+		$images = elgg_get_entities_from_relationship(array(
+			'type' => 'object',
+			'subtype' => 'showcaseimg',
+			'relationship' => 'screenshot',
+			'relationship_guid' => $object->guid,
+			'inverse_relationship' => true,
+			'limit' => false
+		));
+		
+		foreach ($images as $img) {
+			$img->delete();
+		}
+	}
+	
+	// if deleting an image, clean up the files
+	if (elgg_instanceof($object, 'object', 'showcaseimg')) {
+		// remove images
+		$filehandler = new ElggFile();
+		$filehandler->owner_guid = $object->owner_guid;
+		$filehandler->setFilename("{$object->file_prefix}.jpg");
+		$filehandler->delete();
+		
+		$filehandler->setFilename("{$object->file_prefix}master.jpg");
+		$filehandler->delete();
+		
+		$filehandler->setFilename("{$object->file_prefix}large.jpg");
+		$filehandler->delete();
+	
+		$filehandler->setFilename("{$object->file_prefix}medium.jpg");
+		$filehandler->delete();
+	
+		$filehandler->setFilename("{$object->file_prefix}small.jpg");
+		$filehandler->delete();
+	
+		$filehandler->setFilename("{$object->file_prefix}tiny.jpg");
+		$filehandler->delete();
+	}
 }
