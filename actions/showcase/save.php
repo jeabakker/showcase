@@ -29,7 +29,7 @@ if ($_FILES['screenshot']['tmp_name']) {
 				unset($file_keys[$key]);
 			}
 		}
-		elseif (!$size || $size[0] > 1024 || $size[1] > 768) {
+		elseif (!$size || $size[0] > 2048 || $size[1] > 1536) {
 			if(($k = array_search($key, $file_keys)) !== false) {
 				unset($file_keys[$key]);
 				system_message(elgg_echo('showcase:error:image:size'));
@@ -115,7 +115,7 @@ if ($file_keys) {
 	foreach ($file_keys as $key) {
 		
 		$prefix = "showcase/".$time.$key;
-		$img_orig = get_resized_image_from_existing_file($_FILES['screenshot']['tmp_name'][$key],1024,768, false);
+		$img_orig = get_resized_image_from_existing_file($_FILES['screenshot']['tmp_name'][$key],2048,1536, false);
 		$filehandler = new ElggShowcaseImg();
 		$filehandler->owner_guid = $container_guid;
 		$filehandler->setFilename($prefix . ".jpg");
