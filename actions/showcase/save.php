@@ -3,6 +3,13 @@
 elgg_make_sticky_form('showcase');
 
 $guid = get_input('guid');
+$container_guid = get_input('container_guid');
+$owner = get_user($container_guid);
+
+if (!$owner || !can_write_to_container(0, $container_guid, 'object', 'showcase')) {
+	register_error(elgg_echo('showcase:error:permissions:container'));
+	forward(REFERER);
+}
 
 $showcase = new ElggShowcase($guid);
 
@@ -77,7 +84,8 @@ if ($adding) {
 	}
 }
 
-$showcase->owner_guid = elgg_get_logged_in_user_guid();
+$showcase->owner_guid = $container_guid;
+$showcase->container_guid = $container_guid;
 $showcase->access_id = ACCESS_PRIVATE;
 $showcase->address = $address;
 $showcase->title = $title;
@@ -110,7 +118,7 @@ if ($file_keys) {
 		
 		$prefix = "showcase/".$time.$key;
 		$filehandler = new ElggShowcaseImg();
-		$filehandler->owner_guid = elgg_get_logged_in_user_guid();
+		$filehandler->owner_guid = $container_guid;
 		$filehandler->setFilename($prefix . ".jpg");
 		$filehandler->open("write");
 		$filehandler->write(file_get_contents($_FILES['screenshot']['tmp_name'][$key]));
@@ -128,7 +136,7 @@ if ($file_keys) {
 		if ($thumbtiny) {
 
 			$thumb = new ElggFile();
-			$thumb->owner_guid = elgg_get_logged_in_user_guid();
+			$thumb->owner_guid = $container_guid;
 			$thumb->setMimeType('image/jpeg');
 			
 			$thumb->setFilename($prefix."tiny.jpg");

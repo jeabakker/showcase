@@ -177,6 +177,7 @@ $categories = array(
 
 <div class="elgg-foot">
 <?php
+	echo elgg_view('input/hidden', array('name' => 'container_guid', 'value' => elgg_get_page_owner_guid()));
 	echo elgg_view('input/hidden', array('name' => 'guid', 'value' => $showcase->guid));
 	echo elgg_view('input/submit', array('value' => elgg_echo('submit')));
     

@@ -38,7 +38,7 @@ add_translation('en', array(
     
     // messages
     'showcase:error:permissions:edit' => "You do not have permission to edit this showcase!",
-    'showcase:error:permissions:container' => "You do not have permission to add a site to that showcase!",
+    'showcase:error:permissions:container' => "You do not have permission to add that showcase!",
     'showcase:error:empty:fields' => "An address, title, and description are required",
     'showcase:error:save:generic' => "There was a problem saving your showcase!",
 	'showcase:error:invalid:guid' => "Invalid request, you may not have permission.",

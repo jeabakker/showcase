@@ -47,7 +47,7 @@ function showcase_page_handler($page) {
 		case 'add':
 			gatekeeper();
             
-			elgg_set_page_owner_guid(elgg_get_logged_in_user_guid());
+			elgg_set_page_owner_guid($page[1]);
             elgg_push_breadcrumb(elgg_echo('showcase'), elgg_get_site_url() . 'showcase');
             elgg_push_breadcrumb(elgg_echo('showcase:add'));
                 
@@ -71,7 +71,7 @@ function showcase_page_handler($page) {
                forward('','404');
             }
                 
-			elgg_set_page_owner_guid(elgg_get_logged_in_user_guid());
+			elgg_set_page_owner_guid($showcase->owner_guid);
             elgg_push_breadcrumb(elgg_echo('showcase'), elgg_get_site_url() . 'showcase');
             elgg_push_breadcrumb($showcase->title, $showcase->getURL());
             elgg_push_breadcrumb(elgg_echo('edit'));
