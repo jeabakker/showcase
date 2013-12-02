@@ -11,6 +11,7 @@
 
 .elgg-showcase-screenshots li {
 	text-align: center;
+	margin: 0px 2px;
 }
 
 .elgg-showcase-screenshot {
