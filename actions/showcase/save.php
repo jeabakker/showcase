@@ -20,6 +20,22 @@ $editing = !$adding;
 $file_keys = array();
 if ($_FILES['screenshot']['tmp_name']) {
 	$file_keys = array_keys($_FILES['screenshot']['tmp_name']);
+	foreach ($_FILES['screenshot']['tmp_name'] as $key => $tmp_name) {
+		$size = getimagesize($_FILES['screenshot']['tmp_name'][$key]);
+		
+		// check for image errors
+		if(!substr_count($_FILES['screenshot']['type'][$key],'image/') || $_FILES['screenshot']['error'][$key]) {
+			if(($k = array_search($key, $file_keys)) !== false) {
+				unset($file_keys[$key]);
+			}
+		}
+		elseif (!$size || $size[0] > 1024 || $size[1] > 768) {
+			if(($k = array_search($key, $file_keys)) !== false) {
+				unset($file_keys[$key]);
+				system_message(elgg_echo('showcase:error:image:size'));
+			}
+		}
+	}
 }
 
 if ($editing && !$showcase->canEdit()) {
@@ -68,17 +84,7 @@ if (!$validated) {
 
 // also make screenshot mandatory if we're adding
 if ($adding) {
-	$screenshot = false;
-	if ($file_keys) {
-		foreach ($file_keys as $key) {
-			if (substr_count($_FILES['screenshot']['type'][$key],'image/') && !$_FILES['screenshot']['error'][$key]) {
-				$screenshot = true;
-				break;
-			}
-		}
-	}
-	
-	if (!$screenshot) {
+	if (!$file_keys) {
 		register_error(elgg_echo('showcase:error:empty:screenshot'));
         forward(REFERER);
 	}
@@ -107,21 +113,14 @@ if ($file_keys) {
 	$time = time();
 	$invalid = 0;
 	foreach ($file_keys as $key) {
-		// enforce our size limits
-		$size = getimagesize($_FILES['screenshot']['tmp_name'][$key]);
-		
-		if (!$size) { continue; }
-		if ($size[0] > 1024 || $size[1] > 768) {
-			$invalid++;
-			continue;
-		}
 		
 		$prefix = "showcase/".$time.$key;
+		$img_orig = get_resized_image_from_existing_file($_FILES['screenshot']['tmp_name'][$key],1024,768, false);
 		$filehandler = new ElggShowcaseImg();
 		$filehandler->owner_guid = $container_guid;
 		$filehandler->setFilename($prefix . ".jpg");
 		$filehandler->open("write");
-		$filehandler->write(file_get_contents($_FILES['screenshot']['tmp_name'][$key]));
+		$filehandler->write($img_orig);
 		$filehandler->close();
 		$filehandler->save();
 		

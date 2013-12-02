@@ -30,7 +30,7 @@ add_translation('en', array(
     
     // edit form
     'showcase:screenshot' => 'Screenshot',
-    'showcase:screenshot:help' => 'You may upload up to 9 images.  Make sure the screenshots are of decent resolution - but no more than 1024px x 768px',
+    'showcase:screenshot:help' => 'You may upload up to 9 images.  Make sure the screenshots are of decent resolution - but <strong>no more than 1024px x 768px</strong>',
     'showcase:address' => 'Website Address',
 	'showcase:allow:comments' => "Allow Comments",
 	'showcase:add:another' => 'Add another',
@@ -42,7 +42,8 @@ add_translation('en', array(
     'showcase:error:empty:fields' => "An address, title, and description are required",
     'showcase:error:save:generic' => "There was a problem saving your showcase!",
 	'showcase:error:invalid:guid' => "Invalid request, you may not have permission.",
-    'showcase:error:empty:screenshot' => "A screenshot is required",
+    'showcase:error:empty:screenshot' => "A screenshot is required, if you uploaded a file ensure it is a valid image type and no larger than 1024 x 768",
+	'showcase:error:image:size' => "One or more images exceeded the allowed size of 1024 x 768 and were not saved",
 	'showcase:message:deleted' => "Showcase has been deleted",
 	'showcase:error:cannot_delete' => "Cannot delete showcase",
 	'showcase:error:not_found' => "The showcase could not be found",
