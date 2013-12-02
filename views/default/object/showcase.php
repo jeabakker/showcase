@@ -1,14 +1,12 @@
 <?php
-/**
- * Elgg showcase view
- *
- * @package ElggBookmarks
- */
 
-$showcase = $vars['entity'];
+if (!$vars['entity']) {
+	return;
+}
 
-$icon = elgg_view_entity_icon($showcase, 'large');
-
-$body = elgg_view('output/longtext', array('value' => $showcase->description));
-
-echo elgg_view_image_block($icon, $body);
+if ($vars['full_view']) {
+	echo elgg_view('object/showcase/full', $vars);
+}
+else {
+	echo elgg_view('object/showcase/list', $vars);
+}
