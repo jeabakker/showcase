@@ -26,6 +26,7 @@ function showcase_init() {
 	
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'showcase_icon_url_handler');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'showcase_entity_menu');
+	elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'showcase_container_permissions');
 	
 	elgg_register_event_handler('update', 'object', 'showcase_object_update');
 	elgg_register_event_handler('delete', 'object', 'showcase_object_delete');
@@ -153,6 +154,10 @@ function showcase_page_handler($page) {
 				return false;
 			}
 			elgg_set_page_owner_guid($user->guid);
+			
+			if (elgg_is_logged_in() && elgg_get_logged_in_user_guid() == $user->guid) {
+                elgg_register_title_button();
+            }
 			
 			set_input('filter', 'owner');
 			set_input('owner_guid', $user->guid);
@@ -324,4 +329,13 @@ function showcase_object_delete($event, $type, $object) {
 		$filehandler->setFilename("{$object->file_prefix}tiny.jpg");
 		$filehandler->delete();
 	}
+}
+
+
+function showcase_container_permissions($hook, $type, $return, $params) {
+	if ($params['subtype'] != 'showcase') {
+		return $return;
+	}
+	
+	return true;
 }

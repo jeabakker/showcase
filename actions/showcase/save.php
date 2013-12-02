@@ -110,7 +110,7 @@ if ($file_keys) {
 		
 		$prefix = "showcase/".$time.$key;
 		$filehandler = new ElggShowcaseImg();
-		$filehandler->owner_guid = $showcase->guid;
+		$filehandler->owner_guid = elgg_get_logged_in_user_guid();
 		$filehandler->setFilename($prefix . ".jpg");
 		$filehandler->open("write");
 		$filehandler->write(file_get_contents($_FILES['screenshot']['tmp_name'][$key]));
@@ -128,7 +128,7 @@ if ($file_keys) {
 		if ($thumbtiny) {
 
 			$thumb = new ElggFile();
-			$thumb->owner_guid = $showcase->guid;
+			$thumb->owner_guid = elgg_get_logged_in_user_guid();
 			$thumb->setMimeType('image/jpeg');
 			
 			$thumb->setFilename($prefix."tiny.jpg");
