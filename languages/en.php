@@ -42,7 +42,7 @@ add_translation('en', array(
     'showcase:error:empty:fields' => "An address, title, and description are required",
     'showcase:error:save:generic' => "There was a problem saving your showcase!",
 	'showcase:error:invalid:guid' => "Invalid request, you may not have permission.",
-    'showcase:error:empty:screenshot' => "A screenshot is required, if you uploaded a file ensure it is a valid image type and no larger than 1024 x 768",
+    'showcase:error:empty:screenshot' => "A screenshot is required, if you uploaded a file ensure it is a valid image type and no larger than 2048 x 1536",
 	'showcase:error:image:size' => "One or more images exceeded the allowed size of 2048 x 1536 and were not saved",
 	'showcase:message:deleted' => "Showcase has been deleted",
 	'showcase:error:cannot_delete' => "Cannot delete showcase",
