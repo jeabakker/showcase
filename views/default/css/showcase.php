@@ -16,3 +16,8 @@
 .elgg-showcase-screenshot {
 	display: block;
 }
+
+
+ul.elgg-showcase-screenshots {
+	display: inline-block;
+}

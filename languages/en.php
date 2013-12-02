@@ -10,6 +10,10 @@ add_translation('en', array(
 	'showcase:friends' => "Friends' Showcase",
 	'showcase:suggest' => "+ Suggest a site",
     'showcase:noresults' => "No items to show",
+	'showcase:title' => "Website Name",
+	'showcase:description' => "About the site",
+	'showcase:description:help' => "This is your opportunity to show off, don't hold back.",
+	'showcase:gallery:help' => "Click on a thumbnail to launch the gallery",
 
 	'admin:showcase' => "Showcase",
 	'admin:showcase:featured' => "Featured",
@@ -25,7 +29,7 @@ add_translation('en', array(
     
     // edit form
     'showcase:screenshot' => 'Screenshot',
-    'showcase:screenshot:help' => 'Make sure the screenshot is a decent resolution - but no more than 700px x 400px',
+    'showcase:screenshot:help' => 'You may upload up to 9 images.  Make sure the screenshots are of decent resolution - but no more than 1024px x 768px',
     'showcase:address' => 'Website Address',
 	'showcase:allow:comments' => "Allow Comments",
 	'showcase:add:another' => 'Add another',
@@ -44,6 +48,8 @@ add_translation('en', array(
 	'showcase:error:invalid:url' => "The url supplied was invalid",
 	'showcase:edit:review' => "Any updates must be reviewed by an administrator.  After saving the listing will not be visible again until approved.",
 	'showcase:approval:subject' => "Showcase has been approved",
+	'showcase:invalid:screenshot:size' => "%s image(s) were larger than the acceptable size and were not saved",
+	'showcase:screenshot:limit' => "You cannot add any more images, you must delete an existing image to add more",
 	'showcase:approval:message' => "Hello %s,
 The showcase you have submitted has been approved by an administrator.
 You can view your showcase here: %s",

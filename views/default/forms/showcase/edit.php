@@ -23,6 +23,8 @@ if ($showcase->guid) {
 		'order_by' => 'e.time_created ASC'
 	));
 	
+	$imgcount = count($images);
+	
 	$gallery = '<ul class="elgg-gallery elgg-showcase-screenshots">';
 	foreach ($images as $img) {
 		$thumb_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/medium/" . md5($img->time_created) . '.jpg';
@@ -98,7 +100,12 @@ $categories = array(
 <div>
 	<label for="showcase_screenshot"><?php echo elgg_echo('showcase:screenshot'); ?></label>
 	<?php
-		echo '<div class="showcase-screenshot-input">';
+		$screenshot_class = 'showcase-screenshot-input';
+		if ($imgcount >= 9) {
+			$screenshot_class .= ' hidden';
+		}
+	
+		echo '<div class="' . $screenshot_class . '">';
 		echo '<table id="showcase-screenshot-wrapper"><tr><td>';
         echo elgg_view('input/file', array('name' => 'screenshot[]'));
 		echo '</td><td class="remove"></td></tr></table>';
@@ -123,12 +130,19 @@ $categories = array(
 	<?php echo elgg_view('input/url', $address); ?>
 </div>
 <div>
-	<label for="showcase_title"><?php echo elgg_echo('title'); ?></label>
+	<label for="showcase_title"><?php echo elgg_echo('showcase:title'); ?></label>
 	<?php echo elgg_view('input/text', $title); ?>
 </div>
 <div>
-	<label for="showcase_description"><?php echo elgg_echo('description'); ?></label>
-	<?php echo elgg_view('input/longtext', $description); ?>
+	<label for="showcase_description"><?php echo elgg_echo('showcase:description'); ?></label>
+	<?php
+		echo elgg_view('input/longtext', $description);
+		echo elgg_view('output/longtext', array(
+			'value' => elgg_echo('showcase:description:help'),
+			'class' => 'elgg-subtext'
+		));
+	?>
+	
 </div>
 <div>
 	<label for="showcase_tags"><?php echo elgg_echo('tags'); ?></label>

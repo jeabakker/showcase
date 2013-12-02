@@ -6,6 +6,16 @@ $(document).ready(function() {
 	$('.showcase-add-another').click(function(e) {
 		e.preventDefault();
 		
+		// make sure we don't give more than 8 uploads
+		var existing_screenshots = $('ul.elgg-showcase-screenshots li').length;
+		var available_fields = $('.showcase-screenshot-input table').length;
+		var total_screenshots = existing_screenshots + available_fields;
+		
+		if (total_screenshots >= 9) {
+			elgg.register_error(elgg.echo('showcase:screenshot:limit'));
+			return;
+		}
+		
 		$('#showcase-screenshot-wrapper').clone(true)
 			.removeAttr('id')
 			.insertBefore($(this))
@@ -40,6 +50,11 @@ $(document).ready(function() {
                 if (result.status == 0) {
 					// successfully removed it, remove the markup
 					container.remove();
+					
+					// if we have less than 9 screenshots remaining we can show the field if hidden
+					if ($('ul.elgg-showcase-screenshots li').length < 9) {
+						$('.showcase-screenshot-input').show();
+					}
                 }
                 else {
 					// it didn't delete properly, show it again

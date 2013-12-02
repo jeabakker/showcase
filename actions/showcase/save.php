@@ -97,9 +97,18 @@ try {
 // Now see if we have a file icon
 if ($file_keys) {
 	$time = time();
+	$invalid = 0;
 	foreach ($file_keys as $key) {
+		// enforce our size limits
+		$size = getimagesize($_FILES['screenshot']['tmp_name'][$key]);
+		
+		if (!$size) { continue; }
+		if ($size[0] > 1024 || $size[1] > 768) {
+			$invalid++;
+			continue;
+		}
+		
 		$prefix = "showcase/".$time.$key;
-
 		$filehandler = new ElggShowcaseImg();
 		$filehandler->owner_guid = $showcase->guid;
 		$filehandler->setFilename($prefix . ".jpg");
@@ -149,6 +158,10 @@ if ($file_keys) {
 		}
 		
 		$filehandler->file_prefix = $prefix;
+		
+		if ($invalid) {
+			system_message(elgg_echo('showcase:invalid:screenshot:size', array($invalid)));
+		}
 	}
 }
 

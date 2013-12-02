@@ -12,16 +12,20 @@ $images = elgg_get_entities_from_relationship(array(
 	'relationship' => 'screenshot',
 	'relationship_guid' => $vars['entity']->guid,
 	'inverse_relationship' => true,
-	'limit' => 10,
+	'limit' => 9,
 	'order_by' => 'e.time_created ASC'
 ));
 
 $gallery = '';
 if ($images) {
-	$gallery = '<ul class="elgg-gallery elgg-showcase-screenshots">';
+	$gallery .= elgg_view('output/longtext', array(
+		'value' => elgg_echo('showcase:gallery:help'),
+		'class' => 'elgg-subtext'
+	));
+	$gallery .= '<ul class="elgg-gallery elgg-showcase-screenshots">';
 	foreach ($images as $img) {
 		$thumb_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/large/" . md5($img->time_created) . '.jpg';
-		$full_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/master/" . md5($img->time_created) . '.jpg';
+		$full_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/original/" . md5($img->time_created) . '.jpg';
 		$gallery .= '<li>';
 		$gallery .= "<a class=\"elgg-showcase-screenshot elgg-lightbox\" href=\"$full_url\" rel=\"showcase-gallery\"><img src=\"$thumb_url\" alt=\"$img->title\" title=\"$img->title\"/></a>";
 		$gallery .= '</li>';
