@@ -14,6 +14,7 @@ add_translation('en', array(
 	'showcase:description' => "About the site",
 	'showcase:description:help' => "This is your opportunity to show off, don't hold back.",
 	'showcase:gallery:help' => "Click on a thumbnail to launch the gallery",
+	'showcase:website:url' => "Website URL: ",
 
 	'admin:showcase' => "Showcase",
 	'admin:showcase:featured' => "Featured",

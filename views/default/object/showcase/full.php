@@ -16,6 +16,14 @@ $images = elgg_get_entities_from_relationship(array(
 	'order_by' => 'e.time_created ASC'
 ));
 
+
+$url = '<div><strong>' . elgg_echo('showcase:website:url') . '</strong>';
+$url .= elgg_view('output/url', array(
+	'text' => $showcase->address,
+	'href' => $showcase->address
+));
+$url .= '</div>';
+
 $gallery = '';
 if ($images) {
 	$gallery .= elgg_view('output/longtext', array(
@@ -44,7 +52,7 @@ $date = elgg_view_friendly_time($showcase->time_created);
 
 $categories = elgg_view('output/categories', $vars);
 
-$body = $gallery . elgg_view('output/longtext', array('value' => $showcase->description));
+$body = $url . $gallery . elgg_view('output/longtext', array('value' => $showcase->description));
 
 $metadata = elgg_view_menu('entity', array(
 	'entity' => $showcase,
