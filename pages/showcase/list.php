@@ -61,7 +61,7 @@ switch ($filter) {
 			$options['count'] = true;
 		}
 		$options['item_class'] = 'showcase-featured-item';
-		$options['list_class'] = 'showcase-featured-list js-masonry';
+		$options['list_class'] = 'showcase-featured-list';
 		
 		break;
 	case 'owner':
@@ -70,7 +70,7 @@ switch ($filter) {
 			break;
 		}
 		
-		$title = elgg_echo('showcase:title:owner', array(elgg_get_logged_in_user_entity()->name));
+		$title = elgg_echo('showcase:title:owner', array($owner->name));
 		$options['owner_guid'] = $owner->guid;
 		break;
 	case 'friends':

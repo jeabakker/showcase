@@ -27,3 +27,16 @@ echo elgg_view('output/url', array(
 ));
 echo '<br>';
 echo $icon;
+
+// only want this added the first time
+if (elgg_get_config('featured-masonry')) {
+	return;
+}
+
+elgg_set_config('featured-masonry', 1);
+?>
+<script>
+	$(document).ready(function() {
+		$('.showcase-featured-list').masonry();
+	});
+</script>
