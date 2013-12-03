@@ -4,6 +4,10 @@ $filter = get_input('filter', 'featured');
 
 // set defaults
 $title = elgg_echo('showcase');
+$about = elgg_view('output/longtext', array(
+	'value' => elgg_echo('showcase:about'),
+	'class' => 'elgg-subtext'
+));
 $count_getter = 'elgg_get_entities';
 $list_getter = 'elgg_list_entities';
 $options = array(
@@ -114,6 +118,8 @@ switch ($filter) {
 		
 		// don't want to lose updates to older showcases in the noise, bump them back to the top
 		$options['order_by'] = 'e.time_updated DESC';
+		
+		$about = '';
 		break;
 	case 'all':
 	default:
@@ -134,7 +140,7 @@ else {
 
 $layout = elgg_view_layout('content', array(
 	'title' => $title,
-    'content' => $content,
+    'content' => $about . $content,
 	'filter' => elgg_view('showcase/filter'),
 	'sidebar' => elgg_view('showcase/sidebar')
 ));

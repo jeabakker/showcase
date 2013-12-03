@@ -15,6 +15,11 @@ add_translation('en', array(
 	'showcase:description:help' => "This is your opportunity to show off, don't hold back.",
 	'showcase:gallery:help' => "Click on a thumbnail to launch the gallery",
 	'showcase:website:url' => "Website URL: ",
+	'showcase:about' => "
+    The Elgg showcase introduces you Elgg sites from all around the world. The examples aim to demonstrate the power and flexibility of the Elgg framework.
+
+    All members of the community are free to add their own Elgg site to the showcase.
+",
 
 	'admin:showcase' => "Showcase",
 	'admin:showcase:featured' => "Featured",
