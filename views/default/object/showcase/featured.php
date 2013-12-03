@@ -1,13 +1,9 @@
 <?php
-
+elgg_load_js('showcase/imagesloaded');
 elgg_load_js('showcase/masonry');
 
 $showcase = $vars['entity'];
 $owner = $showcase->getOwnerEntity();
-$owner_link = elgg_view('output/url', array(
-	'text' => $owner->name,
-	'href' => $owner->getURL()
-));
 
 // note, not using elgg_view_entity_icon to avoid forced image size
 $icon = elgg_view('output/url', array(
@@ -36,7 +32,8 @@ if (elgg_get_config('featured-masonry')) {
 elgg_set_config('featured-masonry', 1);
 ?>
 <script>
-	$(document).ready(function() {
+	var container = $('.showcase-featured-list');
+	$('.showcase-featured-list').imagesLoaded().always(function(instance) {
 		$('.showcase-featured-list').masonry();
 	});
 </script>

@@ -9,6 +9,10 @@ function showcase_init() {
 	elgg_register_simplecache_view('js/showcase/js');
 	elgg_register_js('showcase', $js);
 	
+	$imagesloaded = elgg_get_simplecache_url('js', 'showcase/imagesloaded');
+	elgg_register_simplecache_view('js/showcase/imagesloaded');
+	elgg_register_js('showcase/imagesloaded', $imagesloaded);
+	
 	$masonry = elgg_get_simplecache_url('js', 'showcase/masonry');
 	elgg_register_simplecache_view('js/showcase/masonry');
 	elgg_register_js('showcase/masonry', $masonry);
