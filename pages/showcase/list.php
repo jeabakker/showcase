@@ -60,6 +60,8 @@ switch ($filter) {
 			$options['guids'] = $guids;
 			$options['count'] = true;
 		}
+		$options['limit'] = false;
+		$options['pagination'] = false;
 		$options['item_class'] = 'showcase-featured-item';
 		$options['list_class'] = 'showcase-featured-list';
 		
