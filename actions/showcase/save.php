@@ -92,7 +92,7 @@ if ($adding) {
 
 $showcase->owner_guid = $container_guid;
 $showcase->container_guid = $container_guid;
-$showcase->access_id = ACCESS_PRIVATE;
+$showcase->access_id = elgg_is_admin_logged_in() ? ACCESS_PUBLIC : ACCESS_PRIVATE;
 $showcase->address = $address;
 $showcase->title = $title;
 $showcase->description = $description;
