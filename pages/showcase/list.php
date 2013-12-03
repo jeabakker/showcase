@@ -16,6 +16,7 @@ $options = array(
 
 switch ($filter) {
 	case 'featured':
+		elgg_push_context('showcase_featured');
 		$title = elgg_echo('showcase:title:featured');
 		$count_getter = 'elgg_get_entities_from_metadata';
 		$list_getter = 'elgg_list_entities_from_metadata';
@@ -23,7 +24,45 @@ switch ($filter) {
 			'name' => 'showcase_featured',
 			'value' => '1'
 		);
+		
 		$options['wheres'] = array("e.access_id = " . ACCESS_PUBLIC);
+		
+		
+		// kludgy way to avoid using order by RAND() - which is VERY slow
+		// use random offsets and populate an array of guids to get with our getter
+		$count = elgg_get_entities_from_metadata($options);
+		if ($count && $count > 15) {
+			// lets get 5 random ones by using random offset
+			$options['callback'] = false;
+			$offsets = array();
+			while (count($offsets) < 15) {
+				$rand = rand(0, ($count - 1));
+				if (in_array($rand, $offsets)) {
+					continue;
+				}
+				
+				$offsets[] = $rand;
+			}
+			
+			$guids = array();
+			foreach ($offsets as $o) {
+				unset($options['count']);
+				$options['offset'] = $o;
+				$options['limit'] = 1;
+				$entity = elgg_get_entities_from_metadata($options);
+				if ($entity) {
+					$guids[] = $entity[0]->guid;
+				}
+			}
+			
+			unset($options['offset'], $options['callback']);
+			$options['limit'] = false;
+			$options['guids'] = $guids;
+			$options['count'] = true;
+		}
+		$options['item_class'] = 'showcase-featured-item';
+		$options['list_class'] = 'showcase-featured-list js-masonry';
+		
 		break;
 	case 'owner':
 		$owner = get_user(get_input('owner_guid'));
@@ -77,6 +116,7 @@ switch ($filter) {
 	case 'all':
 	default:
 		// defaults already set
+		$options['wheres'] = array("e.access_id = " . ACCESS_PUBLIC);
 		break;
 }
 

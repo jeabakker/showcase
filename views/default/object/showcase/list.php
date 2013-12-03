@@ -1,5 +1,11 @@
 <?php
 
+// short circuit for a different view for featured
+if (elgg_in_context('showcase_featured')) {
+	echo elgg_view('object/showcase/featured', $vars);
+	return;
+}
+
 $showcase = $vars['entity'];
 
 $excerpt = elgg_get_excerpt($showcase->description);

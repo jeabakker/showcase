@@ -9,6 +9,10 @@ function showcase_init() {
 	elgg_register_simplecache_view('js/showcase/js');
 	elgg_register_js('showcase', $js);
 	
+	$masonry = elgg_get_simplecache_url('js', 'showcase/masonry');
+	elgg_register_simplecache_view('js/showcase/masonry');
+	elgg_register_js('showcase/masonry', $masonry);
+	
 	//general
 	elgg_register_entity_type("object", 'showcase');
 
