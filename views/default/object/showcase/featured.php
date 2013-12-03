@@ -1,5 +1,5 @@
 <?php
-elgg_load_js('showcase/imagesloaded');
+//elgg_load_js('showcase/imagesloaded');
 elgg_load_js('showcase/masonry');
 
 $showcase = $vars['entity'];
@@ -32,8 +32,11 @@ if (elgg_get_config('featured-masonry')) {
 elgg_set_config('featured-masonry', 1);
 ?>
 <script>
-	var container = $('.showcase-featured-list');
-	$('.showcase-featured-list').imagesLoaded().always(function(instance) {
-		$('.showcase-featured-list').masonry();
+	$(document).ready(function() {
+		$('.showcase-featured-list img').each(function() {
+			$(this).load(function() {
+				$('.showcase-featured-list').masonry();
+			});
+		});
 	});
 </script>
