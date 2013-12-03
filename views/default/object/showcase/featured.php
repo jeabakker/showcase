@@ -33,8 +33,13 @@ elgg_set_config('featured-masonry', 1);
 ?>
 <script>
 	$(document).ready(function() {
+		
+		// call initially for cached images
+		$('.showcase-featured-list').masonry();
+		
 		$('.showcase-featured-list img').each(function() {
 			$(this).load(function() {
+				// call when an image gets loaded
 				$('.showcase-featured-list').masonry();
 			});
 		});
