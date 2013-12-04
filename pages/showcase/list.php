@@ -4,6 +4,7 @@ $filter = get_input('filter', 'featured');
 
 // set defaults
 $title = elgg_echo('showcase');
+$content = '';
 $about = elgg_view('output/longtext', array(
 	'value' => elgg_echo('showcase:about'),
 	'class' => 'elgg-subtext'
@@ -35,11 +36,12 @@ switch ($filter) {
 		// kludgy way to avoid using order by RAND() - which is VERY slow
 		// use random offsets and populate an array of guids to get with our getter
 		$count = elgg_get_entities_from_metadata($options);
-		if ($count && $count > 15) {
-			// lets get 5 random ones by using random offset
-			$options['callback'] = false;
+		unset($options['count']);
+		
+		if ($count) {
+			// lets get random entities by using random offset
 			$offsets = array();
-			while (count($offsets) < 15) {
+			while (count($offsets) < min(array($count, 15))) {
 				$rand = rand(0, ($count - 1));
 				if (in_array($rand, $offsets)) {
 					continue;
@@ -48,27 +50,28 @@ switch ($filter) {
 				$offsets[] = $rand;
 			}
 			
-			$guids = array();
+			$entities = array();
+			$options['limit'] = 1;
 			foreach ($offsets as $o) {
-				unset($options['count']);
 				$options['offset'] = $o;
-				$options['limit'] = 1;
 				$entity = elgg_get_entities_from_metadata($options);
 				if ($entity) {
-					$guids[] = $entity[0]->guid;
+					$entities[] = $entity[0];
 				}
 			}
-			
-			unset($options['offset'], $options['callback']);
-			$options['limit'] = false;
-			$options['guids'] = $guids;
-			$options['count'] = true;
 		}
-		$options['limit'] = false;
+		
 		$options['pagination'] = false;
 		$options['item_class'] = 'showcase-featured-item';
 		$options['list_class'] = 'showcase-featured-list';
 		
+		if ($entities) {
+			$content = elgg_view_entity_list($entities, $options);
+		}
+		else {
+			$content = elgg_echo('showcase:noresults');
+		}
+
 		break;
 	case 'owner':
 		$owner = get_user(get_input('owner_guid'));
@@ -128,14 +131,17 @@ switch ($filter) {
 		break;
 }
 
-$count = $count_getter($options);
 
-if ($count) {
-    unset($options['count']);
-    $content = $list_getter($options);
-}
-else {
-    $content = elgg_echo('showcase:noresults');
+if (!$content) {
+	$count = $count_getter($options);
+
+	if ($count) {
+		unset($options['count']);
+		$content = $list_getter($options);
+	}
+	else {
+		$content = elgg_echo('showcase:noresults');
+	}
 }
 
 $layout = elgg_view_layout('content', array(
