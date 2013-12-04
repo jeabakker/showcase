@@ -117,6 +117,7 @@ if ($file_keys) {
 		$prefix = "showcase/".$time.$key;
 		$img_orig = get_resized_image_from_existing_file($_FILES['screenshot']['tmp_name'][$key],2048,1536, false);
 		$filehandler = new ElggShowcaseImg();
+		$filehandler->access_id = elgg_is_admin_logged_in() ? ACCESS_PUBLIC : ACCESS_PRIVATE;
 		$filehandler->owner_guid = $container_guid;
 		$filehandler->setFilename($prefix . ".jpg");
 		$filehandler->open("write");
