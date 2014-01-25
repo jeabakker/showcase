@@ -77,6 +77,14 @@ if ($php_5_2_13_and_below || $php_5_3_0_to_5_3_2) {
 } else {
 	$validated = filter_var($address, FILTER_VALIDATE_URL);
 }
+// above doesn't check for tld, which we will require
+if ($validated) {
+	$parts = parse_url($address);
+	if (count(explode('.', $parts['host'])) < 2) {
+		$validated = false;
+	}
+}
+
 if (!$validated) {
 	register_error(elgg_echo('showcase:error:invalid:url'));
 	forward(REFERER);
