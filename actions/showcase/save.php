@@ -99,8 +99,9 @@ if ($adding) {
 }
 
 $access_id = ACCESS_PRIVATE;
-if (elgg_is_admin_logged_in()) {
-	$access_id = $adding ? ACCESS_PUBLIC : $showcase->access_id;
+if ($editing && elgg_is_admin_logged_in()) {
+	// leave access as-is for an admin editing
+	$access_id = $showcase->access_id;
 }
 
 $showcase->owner_guid = $container_guid;
