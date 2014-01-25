@@ -10,8 +10,13 @@
 }
 
 .elgg-showcase-screenshots li {
+	border: 1px solid #CCC;
 	text-align: center;
-	margin: 0px 2px;
+	height: 150px;
+	width: 200px;
+	overflow: hidden;
+	padding: 5px;
+	margin: 10px;
 }
 
 .elgg-showcase-screenshot {
