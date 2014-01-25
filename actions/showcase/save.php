@@ -90,9 +90,14 @@ if ($adding) {
 	}
 }
 
+$access_id = ACCESS_PRIVATE;
+if (elgg_is_admin_logged_in()) {
+	$access_id = $adding ? ACCESS_PUBLIC : $showcase->access_id;
+}
+
 $showcase->owner_guid = $container_guid;
 $showcase->container_guid = $container_guid;
-$showcase->access_id = elgg_is_admin_logged_in() ? ACCESS_PUBLIC : ACCESS_PRIVATE;
+$showcase->access_id = $access_id;
 $showcase->address = $address;
 $showcase->title = $title;
 $showcase->description = $description;
@@ -172,6 +177,8 @@ if ($file_keys) {
 		}
 	}
 }
+
+showcase_set_featured_dimensions($showcase);
 
 elgg_clear_sticky_form('showcase');
 

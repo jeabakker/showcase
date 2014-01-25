@@ -217,19 +217,11 @@ function showcase_icon_url_handler($hook, $type, $return, $params) {
 	}
 	
 	// get first (oldest) image
-	$img = elgg_get_entities_from_relationship(array(
-		'type' => 'object',
-		'subtype' => 'showcaseimg',
-		'relationship' => 'screenshot',
-		'relationship_guid' => $params['entity']->guid,
-		'inverse_relationship' => true,
-		'limit' => 1,
-		'order_by' => 'e.time_created ASC'
-	));
+	$img = showcase_get_default_image($params['entity']);
 	
-	if ($img[0]) {
-		$filename = md5($img[0]->time_created);
-		return "showcase/icon/{$img[0]->guid}/{$params['size']}/{$filename}.jpg";
+	if ($img) {
+		$filename = md5($img->time_created);
+		return "showcase/icon/{$img->guid}/{$params['size']}/{$filename}.jpg";
 	}
 	
 	return $return;
@@ -332,6 +324,10 @@ function showcase_object_delete($event, $type, $object) {
 	
 		$filehandler->setFilename("{$object->file_prefix}tiny.jpg");
 		$filehandler->delete();
+		
+		// now regenerate the default image size cache
+		$showcase = showcase_get_showcase_from_image($object);
+		$showcase->featured_image_size_cache = 0;
 	}
 }
 
@@ -343,3 +339,74 @@ function showcase_container_permissions($hook, $type, $return, $params) {
 	
 	return true;
 }
+
+
+function showcase_set_featured_dimensions($showcase) {
+	if (!elgg_instanceof($showcase, 'object', 'showcase')) {
+		return true;
+	}
+	
+	// we're caching the dimensions of the default image
+	// as they may take different sizes (not squared) and we want to know
+	// to set dimensions for masonry
+	$image = showcase_get_default_image($showcase);
+	
+	$sizes = array('tiny', 'small', 'medium', 'large', 'master');
+	
+	foreach ($sizes as $size) {
+		$image->setFilename($image->file_prefix . $size . '.jpg');
+		$imageinfo = getimagesize($image->getFilenameOnFilestore());
+		
+		$width = 'default_size_cache_' . $size . '_w';
+		$height = 'default_size_cache_' . $size . '_h';
+		
+		if ($imageinfo[0] && $imageinfo[1]) {			
+			$showcase->$width = $imageinfo[0];
+			$showcase->$height = $imageinfo[1];
+		}
+		else {
+			$showcase->$width = '';
+			$showcase->$height = '';
+		}
+	}
+	
+	$showcase->featured_image_size_cache = 1;
+}
+
+function showcase_get_default_image($showcase) {
+	// get first (oldest) image
+	$img = elgg_get_entities_from_relationship(array(
+		'type' => 'object',
+		'subtype' => 'showcaseimg',
+		'relationship' => 'screenshot',
+		'relationship_guid' => $showcase->guid,
+		'inverse_relationship' => true,
+		'limit' => 1,
+		'order_by' => 'e.time_created ASC'
+	));
+	
+	if ($img[0]) {
+		return $img[0];
+	}
+	
+	return false;
+}
+
+
+function showcase_get_showcase_from_image($image) {
+	$showcase = elgg_get_entities_from_relationship(array(
+		'type' => 'object',
+		'subtype' => 'showcase',
+		'relationship' => 'screenshot',
+		'relationship_guid' => $image->guid,
+		'limit' => 1
+	));
+	
+	if ($showcase[0]) {
+		return $showcase[0];
+	}
+	
+	return false;
+}
+
+
