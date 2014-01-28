@@ -3,7 +3,7 @@
 $filter = get_input('filter', 'featured');
 
 // set defaults
-$title = elgg_echo('showcase');
+$title = elgg_echo('showcase:list:all');
 $content = '';
 $about = elgg_view('output/longtext', array(
 	'value' => elgg_echo('showcase:about'),
