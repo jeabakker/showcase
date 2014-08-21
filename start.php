@@ -26,9 +26,8 @@ function showcase_init() {
 	elgg_register_action("showcase/toggle_featured", "$actions_base/toggle_featured.php", 'admin');
 
 	//handlers
-	elgg_register_entity_url_handler('object', 'showcase', 'showcase_url_handler');
-	
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'showcase_icon_url_handler');
+	elgg_register_plugin_hook_handler('entity:url', 'object', 'showcase_url_handler');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'showcase_entity_menu');
 	elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'showcase_container_permissions');
 	
@@ -206,8 +205,23 @@ function showcase_page_handler($page) {
 	return false;
 }
 
-function showcase_url_handler($object) {
-	return "/showcase/view/$object->guid/" . elgg_get_friendly_title($object->title);
+/**
+ * Handles showcase URLs
+ *
+ * @param string $hook
+ * @param string $type
+ * @param string $url
+ * @param array  $params
+ * @return string
+ */
+function showcase_url_handler($hook, $type, $url, $params) {
+	$entity = $params['entity'];
+
+	if ($entity instanceof ElggShowcase) {
+		$url = "/showcase/view/$entity->guid/" . elgg_get_friendly_title($entity->title);
+	}
+
+	return $url;
 }
 
 
