@@ -26,14 +26,14 @@ add_translation('en', array(
 	'admin:showcase:featured' => "Showcase",
 	'admin:showcase:pending' => "Pending",
 	'item:object:showcase' => "Elgg Site",
-	
+
 	'showcase:validate' => 'Validate',
 	'showcase:unvalidate' => 'Unvalidate',
 	'showcase:feature' => 'Feature',
 	'showcase:unfeature' => 'Unfeature',
 	'showcase:action:featured' => "Site has been featured",
 	'showcase:action:unfeatured' => "Site has been unfeatured",
-    
+
     // edit form
     'showcase:screenshot' => 'Screenshot',
     'showcase:screenshot:help' => 'You may upload up to 9 images.  Make sure the screenshots are of decent resolution - but <strong>no more than 2048px x 1536px</strong>',
@@ -41,7 +41,7 @@ add_translation('en', array(
 	'showcase:allow:comments' => "Allow Comments",
 	'showcase:add:another' => 'Add another',
 	'showcase:imagedelete:failed' => "There was an error deleting the screenshot",
-    
+
     // messages
     'showcase:error:permissions:edit' => "You do not have permission to edit this site!",
     'showcase:error:permissions:container' => "You do not have permission to add that site!",
@@ -61,17 +61,26 @@ add_translation('en', array(
 	'showcase:approval:message' => "Hello %s,
 The elgg site you have submitted has been approved by an administrator.
 You can view your site listing here: %s",
-	
+
 	// tabs
 	'showcase:tab:featured' => 'Showcase',
 	'showcase:tab:unvalidated' => 'Unvalidated',
-	
+
 	'showcase:title:featured' => "Showcase: the best of Elgg",
 	'showcase:title:owner' => "%s's Elgg Sites",
 	'showcase:title:friends' => "Friends Elgg Sites",
 	'showcase:title:unvalidated' => "Unvalidated Sites",
-	
+
 	'showcase:widget:title' => 'Elgg Sites',
 	'showcase:widget:description' => 'Display a list of your Elgg sites',
 	'showcase:widget:label:number' => 'Number to display',
+
+	// notifications
+	'showcase:notify:summary' => 'Pending showcase site: %s',
+	'showcase:notify:subject' => 'Pending showcase site: %s',
+	'showcase:notify:body' =>
+"
+There's a showcase site in need of a review:
+%s
+",
 ));
