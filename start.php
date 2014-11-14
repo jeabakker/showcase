@@ -49,7 +49,7 @@ function showcase_init() {
 		'text' => elgg_echo('showcase'),
 	)));
 
-	elgg_register_widget_type('showcase', elgg_echo('showcase:widget:title'), elgg_echo('showcase:widget:description'), 'profile,dashboard');
+	elgg_register_widget_type('showcase', elgg_echo('showcase:widget:title'), elgg_echo('showcase:widget:description'), array('profile', 'dashboard'));
 }
 
 function showcase_page_handler($page) {
