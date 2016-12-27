@@ -123,13 +123,20 @@ try {
 }
 
 // Now see if we have a file icon
+if (!is_dir(elgg_get_data_path() . 'showcase_tmp')) {
+	mkdir(elgg_get_data_path() . 'showcase_tmp');
+}
 if ($file_keys) {
 	$time = time();
 	$invalid = 0;
 	foreach ($file_keys as $key) {
 		
 		$prefix = "showcase/".$time.$key;
-		$img_orig = get_resized_image_from_existing_file($_FILES['screenshot']['tmp_name'][$key],2048,1536, false);
+		
+		//imagine can't use files without an extension
+		copy($_FILES['screenshot']['tmp_name'][$key], elgg_get_data_path() . 'showcase_tmp/' . $_FILES['screenshot']['name'][$key]);
+		$img_orig = get_resized_image_from_existing_file(elgg_get_data_path() . 'showcase_tmp/' . $_FILES['screenshot']['name'][$key],2048,1536, false);
+		unlink(elgg_get_data_path() . 'showcase_tmp/' . $_FILES['screenshot']['name']);
 		$filehandler = new ElggShowcaseImg();
 		$filehandler->access_id = elgg_is_admin_logged_in() ? ACCESS_PUBLIC : ACCESS_PRIVATE;
 		$filehandler->owner_guid = $container_guid;
