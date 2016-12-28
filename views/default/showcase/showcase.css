@@ -1,0 +1,74 @@
+.showcase-review-notice {
+	color: red;
+}
+
+.showcase-featured-list {
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+	justify-content: center;
+	align-items: flex-start;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.showcase-featured-list > li {
+    -webkit-flex-basis: 31%;
+	flex-basis: 31%;
+    text-align: center;
+    padding: 15px;
+	margin: 1%;
+    border: 1px solid transparent;
+	background-color: transparent;
+	border-radius: 5px;
+}
+
+.showcase-featured-list > li:hover {
+	border-color: #dcdcdc;
+	background-color: #f1f1f1;
+}
+
+.showcase-featured-list > li > h3 {
+	margin-bottom: 10px;
+}
+
+.showcase-add-another {
+	font-weight: bold;
+}
+
+.showcase-add-another .elgg-icon {
+    font-size: inherit;
+    color: inherit;
+    margin-right: 5px;
+}
+
+elgg-showcase-screenshots {
+	margin: 10px auto;
+}
+
+.elgg-showcase-screenshots > li {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+}
+
+.elgg-showcase-screenshots > li > a {
+    display: block;
+}
+
+.elgg-showcase-screenshot-delete {
+    position: absolute;
+    color: #f30;
+    top: 0;
+    right: 0;
+    margin: -8px;
+}
+.elgg-showcase-screenshot-delete .elgg-icon {
+	color: inherit;
+}
+
+.elgg-showcase-screenshots > li  img {
+    vertical-align: middle;
+}

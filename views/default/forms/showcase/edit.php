@@ -1,7 +1,5 @@
 <?php
-elgg_load_js('lightbox');
-elgg_load_css('lightbox');
-elgg_load_js('showcase');
+elgg_require_js('forms/showcase/edit');
 
 $showcase = $vars['entity'];
 $images = array();
@@ -30,7 +28,7 @@ if ($showcase->guid) {
 		$thumb_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/medium/" . md5($img->time_created) . '.jpg';
 		$full_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/master/" . md5($img->time_created) . '.jpg';
 		$gallery .= '<li>';
-		$gallery .= "<a class=\"elgg-showcase-screenshot elgg-lightbox\" href=\"$full_url\" rel=\"showcase-gallery\"><img src=\"$thumb_url\" alt=\"$img->title\" title=\"$img->title\"/></a>";
+		$gallery .= "<a class=\"elgg-showcase-screenshot elgg-lightbox elgg-photo\" href=\"$full_url\" rel=\"showcase-gallery\"><img src=\"$thumb_url\" alt=\"$img->title\" title=\"$img->title\"/></a>";
 		$gallery .= elgg_view('output/url', array(
 			'text' => elgg_view_icon('delete'),
 			'href' => 'action/showcase/screenshot/delete?guid=' . $img->guid,
@@ -110,9 +108,9 @@ $categories = array(
         echo elgg_view('input/file', array('name' => 'screenshot[]'));
 		echo '</td><td class="remove"></td></tr></table>';
 		echo elgg_view('output/url', array(
-			'text' => elgg_echo('showcase:add:another'),
+			'text' => elgg_view_icon('plus') . elgg_echo('showcase:add:another'),
 			'href' => '#',
-			'class' => 'showcase-add-another elgg-button elgg-button-action'
+			'class' => 'showcase-add-another'
 		));
 		echo '</div>';
         echo elgg_view('output/longtext', array(
@@ -121,7 +119,7 @@ $categories = array(
         ));
 		
 		if ($gallery) {
-			echo '<br>' . $gallery;
+			echo '<div>' . $gallery . '</div>';
 		}
         ?>
 </div>

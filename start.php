@@ -3,15 +3,8 @@
 elgg_register_event_handler('init', 'system', 'showcase_init');
 
 function showcase_init() {
-	elgg_extend_view('css/elgg', 'css/showcase');
-
-	$js = elgg_get_simplecache_url('js', 'showcase/js');
-	elgg_register_simplecache_view('js/showcase/js');
-	elgg_register_js('showcase', $js);
-
-	$masonry = elgg_get_simplecache_url('js', 'showcase/masonry');
-	elgg_register_simplecache_view('js/showcase/masonry');
-	elgg_register_js('showcase/masonry', $masonry);
+	
+	elgg_extend_view('elgg.css', 'showcase/showcase.css');
 
 	//general
 	elgg_register_entity_type("object", 'showcase');
