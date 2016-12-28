@@ -1,7 +1,5 @@
 <?php
-elgg_load_js('lightbox');
-elgg_load_css('lightbox');
-elgg_load_js('showcase');
+elgg_require_js('forms/showcase/edit');
 
 $showcase = $vars['entity'];
 $images = array();

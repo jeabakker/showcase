@@ -1,8 +1,5 @@
 <?php
 
-elgg_load_js('lightbox');
-elgg_load_css('lightbox');
-
 $showcase = $vars['entity'];
 $owner = $showcase->getOwnerEntity();
 
