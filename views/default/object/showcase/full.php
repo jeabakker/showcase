@@ -1,5 +1,7 @@
 <?php
 
+elgg_require_js('showcase/gallery');
+
 $showcase = $vars['entity'];
 $owner = $showcase->getOwnerEntity();
 
@@ -32,7 +34,16 @@ if ($images) {
 		$thumb_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/large/" . md5($img->time_created) . '.jpg';
 		$full_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/original/" . md5($img->time_created) . '.jpg';
 		$gallery .= '<li>';
-		$gallery .= "<a class=\"elgg-showcase-screenshot elgg-lightbox elgg-photo\" href=\"$full_url\" rel=\"showcase-gallery\"><img src=\"$thumb_url\" alt=\"$img->title\" title=\"$img->title\"/></a>";
+		$gallery .= elgg_view('output/url', [
+			'class' => 'elgg-showcase-screenshot elgg-photo',
+			'href' => $full_url,
+			'rel' => 'showcase-gallery',
+			'title' => $img->title,
+			'text' => elgg_view('output/img', [
+				'src' => $thumb_url,
+				'alt' => $img->title,
+			]),
+		]);
 		$gallery .= '</li>';
 	}
 	$gallery .= '</ul>';

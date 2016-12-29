@@ -1,5 +1,6 @@
 <?php
 elgg_require_js('forms/showcase/edit');
+elgg_require_js('showcase/gallery');
 
 $showcase = $vars['entity'];
 $images = array();
@@ -28,7 +29,17 @@ if ($showcase->guid) {
 		$thumb_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/medium/" . md5($img->time_created) . '.jpg';
 		$full_url = elgg_get_site_url() . "showcase/icon/{$img->guid}/master/" . md5($img->time_created) . '.jpg';
 		$gallery .= '<li>';
-		$gallery .= "<a class=\"elgg-showcase-screenshot elgg-lightbox elgg-photo\" href=\"$full_url\" rel=\"showcase-gallery\"><img src=\"$thumb_url\" alt=\"$img->title\" title=\"$img->title\"/></a>";
+		$gallery .= elgg_view('output/url', [
+			'class' => 'elgg-showcase-screenshot elgg-photo',
+			'href' => $full_url,
+			'rel' => 'showcase-gallery',
+			'title' => $img->title,
+			'text' => elgg_view('output/img', [
+				'src' => $thumb_url,
+				'alt' => $img->title,
+			]),
+		]);
+		
 		$gallery .= elgg_view('output/url', array(
 			'text' => elgg_view_icon('delete'),
 			'href' => 'action/showcase/screenshot/delete?guid=' . $img->guid,
