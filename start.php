@@ -364,6 +364,9 @@ function showcase_set_featured_dimensions($showcase) {
 	// as they may take different sizes (not squared) and we want to know
 	// to set dimensions for masonry
 	$image = showcase_get_default_image($showcase);
+	if (!elgg_instanceof($image, 'object', 'showcaseimg')) {
+		return true;
+	}
 
 	$sizes = array('tiny', 'small', 'medium', 'large', 'master');
 
