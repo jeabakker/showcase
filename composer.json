@@ -1,4 +1,14 @@
 {
     "name": "elgg/showcase",
-    "type": "elgg-plugin"
+    "description": "Show off implementations/uses of your product",
+    "type": "elgg-plugin",
+    "keywords": ["elgg", "plugin", "showcase"],
+    "license": "GPL-2.0-only",
+    "support": {
+        "source": "https://github.com/Elgg/showcase",
+        "issues": "https://github.com/Elgg/showcase/issues"
+    },
+    "require": {
+        "composer/installers": "^1.0.8"
+    }
 }
